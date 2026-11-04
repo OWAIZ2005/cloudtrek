@@ -60,7 +60,7 @@ export function Hero() {
                 />
               </div>
             </div>
-            <div className="img-zoom img-shade-strong relative col-span-12 aspect-[2.6/1] overflow-hidden bg-offwhite sm:col-span-7">
+            <div className="img-zoom img-shade-strong img-fade-soft relative col-span-12 aspect-[2.6/1] overflow-hidden bg-offwhite sm:col-span-7">
               <Image
                 src="/images/hero/gift-boxes-strip.jpg"
                 alt="Gift boxes with ribbons ready for corporate gifting"
