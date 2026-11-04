@@ -1,0 +1,182 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  /* Cloud Trek brand (digital approximations — replace once official specs are supplied) */
+  --color-navy: #173b70;
+  --color-navy-deep: #0f2a52;
+  --color-brand-red: #c43b43;
+  --color-offwhite: #f7f7f5;
+  --color-mist: #eaf0f7;
+  --color-line: #e9eaec;
+  --color-charcoal: #20242b;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-inter), var(--font-arabic), system-ui, sans-serif;
+  --font-display: var(--font-inter-tight), var(--font-arabic), system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono);
+  --font-heading: var(--font-display);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+:root {
+  --background: #ffffff;
+  --foreground: #20242b;
+  --card: #ffffff;
+  --card-foreground: #20242b;
+  --popover: #ffffff;
+  --popover-foreground: #20242b;
+  --primary: #173b70;
+  --primary-foreground: #ffffff;
+  --secondary: #f7f7f5;
+  --secondary-foreground: #173b70;
+  --muted: #f7f7f5;
+  --muted-foreground: #5b6270;
+  --accent: #eaf0f7;
+  --accent-foreground: #173b70;
+  --destructive: #c43b43;
+  --border: #e9eaec;
+  --input: #d9dce1;
+  --ring: #173b70;
+  --chart-1: #173b70;
+  --chart-2: #c43b43;
+  --chart-3: #6a8bb8;
+  --chart-4: #20242b;
+  --chart-5: #b7c6dc;
+  --radius: 0.25rem;
+  --sidebar: #f7f7f5;
+  --sidebar-foreground: #20242b;
+  --sidebar-primary: #173b70;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #eaf0f7;
+  --sidebar-accent-foreground: #173b70;
+  --sidebar-border: #e9eaec;
+  --sidebar-ring: #173b70;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    @apply font-sans;
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "ss01", "cv11";
+  }
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+    color: var(--color-navy);
+  }
+  [dir="rtl"] h1, [dir="rtl"] h2, [dir="rtl"] h3, [dir="rtl"] h4 {
+    letter-spacing: 0;
+  }
+  ::selection {
+    background: var(--color-navy);
+    color: #fff;
+  }
+}
+
+@layer utilities {
+  .container-x {
+    @apply mx-auto w-full max-w-[1320px] px-5 sm:px-8 lg:px-12;
+  }
+  .eyebrow {
+    @apply text-[11px] font-semibold uppercase tracking-[0.18em] text-brand-red;
+  }
+  [dir="rtl"] .eyebrow {
+    letter-spacing: 0.04em;
+  }
+  .display-1 {
+    font-family: var(--font-display);
+    @apply text-[clamp(2.6rem,7vw,6rem)] leading-[0.98] font-semibold tracking-[-0.035em] text-navy;
+  }
+  .display-2 {
+    font-family: var(--font-display);
+    @apply text-[clamp(2rem,4.6vw,3.75rem)] leading-[1.1] font-semibold tracking-[-0.03em] text-navy;
+  }
+  .rule-top {
+    @apply border-t border-line;
+  }
+  .img-zoom img {
+    @apply transition-transform duration-700 ease-out;
+  }
+  .img-zoom:hover img {
+    transform: scale(1.045);
+  }
+  /* Brand shade: soft navy gradient over photography that eases off on hover. */
+  .img-zoom {
+    position: relative;
+    isolation: isolate;
+  }
+  .img-zoom::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background:
+      linear-gradient(to top, rgb(15 42 82 / 0.38) 0%, rgb(15 42 82 / 0.1) 38%, transparent 65%),
+      linear-gradient(to bottom, rgb(23 59 112 / 0.1), transparent 30%);
+    transition: opacity 0.6s ease;
+  }
+  .img-zoom:hover::after,
+  .img-zoom:focus-within::after {
+    opacity: 0.35;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* React Bits TrueFocus: inherit Cloud Trek heading typography instead of its 3rem/900 defaults */
+.ct-focus .focus-container { justify-content: flex-start; gap: 0.28em; }
+.ct-focus-center .focus-container { justify-content: center; }
+.ct-focus .focus-word { font-size: inherit; font-weight: inherit; font-family: inherit; letter-spacing: inherit; line-height: inherit; color: inherit; cursor: default; }
