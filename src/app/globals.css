@@ -100,6 +100,8 @@
   html {
     @apply font-sans;
     scroll-behavior: smooth;
+    /* Slightly compact scale: all rem-based type, spacing and components shrink together. */
+    font-size: 90%;
   }
   body {
     @apply bg-background text-foreground antialiased;
@@ -131,7 +133,7 @@
   }
   .display-1 {
     font-family: var(--font-display);
-    @apply text-[clamp(2.6rem,7vw,6rem)] leading-[0.98] font-semibold tracking-[-0.035em] text-navy;
+    @apply text-[clamp(2.5rem,6.2vw,5.25rem)] leading-[0.98] font-semibold tracking-[-0.035em] text-navy;
   }
   .display-2 {
     font-family: var(--font-display);

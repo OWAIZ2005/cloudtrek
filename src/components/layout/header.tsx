@@ -45,8 +45,8 @@ export function Header({ dict, locale }: { dict: Dictionary; locale: Locale }) {
         scrolled ? "border-line shadow-[0_1px_0_0_rgba(23,59,112,0.04)]" : "border-transparent",
       )}
     >
-      <div className="container-x flex h-[84px] items-center justify-between gap-6 lg:h-[96px]">
-        <CloudTrekLogo variant="navbar" href="/" priority className="h-[60px] sm:h-16 lg:h-[76px]" sizes="300px" />
+      <div className="container-x flex h-[76px] items-center justify-between gap-6 lg:h-[84px]">
+        <CloudTrekLogo variant="navbar" href="/" priority className="h-[54px] sm:h-14 lg:h-[68px]" sizes="300px" />
 
         <nav aria-label="Primary" className="hidden items-center xl:flex">
           {navLinks.map((l) => {

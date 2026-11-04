@@ -54,7 +54,7 @@ export function ProductFilters({
   const chips = [{ id: "", name: "All", count: total }, ...categories.map((c) => ({ id: c.slug, name: c.name, count: counts[c.slug] ?? 0 }))];
 
   return (
-    <div className="sticky top-[84px] z-30 -mx-5 border-b border-line bg-white/90 px-5 py-4 backdrop-blur-md sm:mx-0 sm:px-0 lg:top-[96px]">
+    <div className="sticky top-[76px] z-30 -mx-5 border-b border-line bg-white/90 px-5 py-4 backdrop-blur-md sm:mx-0 sm:px-0 lg:top-[84px]">
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <form
           role="search"
