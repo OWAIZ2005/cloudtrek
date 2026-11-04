@@ -29,7 +29,7 @@ export function Hero() {
 
         <Reveal className="lg:col-span-6" delay={0.1} distance={30} duration={1}>
           <div className="relative mx-auto grid max-w-xl grid-cols-12 gap-3 sm:gap-4 lg:ms-auto lg:max-w-[88%]">
-            <div className="img-zoom relative col-span-8 aspect-[4/5] overflow-hidden bg-offwhite">
+            <div className="img-zoom img-shade-strong relative col-span-8 aspect-[4/5] overflow-hidden bg-offwhite">
               <Image
                 src="/images/hero/gift-exchange.jpg"
                 alt="Two hands exchanging a beautifully wrapped corporate gift box"
@@ -41,7 +41,7 @@ export function Hero() {
               />
             </div>
             <div className="col-span-4 flex flex-col gap-3 sm:gap-4">
-              <div className="img-zoom relative flex-1 overflow-hidden bg-offwhite">
+              <div className="img-zoom img-shade-strong relative flex-1 overflow-hidden bg-offwhite">
                 <Image
                   src="/images/products/welcome-kit-tall.jpg"
                   alt="Employee welcome kit with branded caps and towels"
@@ -50,7 +50,7 @@ export function Hero() {
                   className="object-cover object-center"
                 />
               </div>
-              <div className="img-zoom relative aspect-square overflow-hidden bg-offwhite">
+              <div className="img-zoom img-shade-strong relative aspect-square overflow-hidden bg-offwhite">
                 <Image
                   src="/images/products/leather-notebook.jpg"
                   alt="Leather notebook with a pen"
@@ -60,7 +60,7 @@ export function Hero() {
                 />
               </div>
             </div>
-            <div className="img-zoom relative col-span-12 aspect-[2.6/1] overflow-hidden bg-offwhite sm:col-span-7">
+            <div className="img-zoom img-shade-strong relative col-span-12 aspect-[2.6/1] overflow-hidden bg-offwhite sm:col-span-7">
               <Image
                 src="/images/hero/gift-boxes-strip.jpg"
                 alt="Gift boxes with ribbons ready for corporate gifting"

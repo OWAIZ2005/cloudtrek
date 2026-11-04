@@ -164,6 +164,12 @@
       linear-gradient(to bottom, rgb(23 59 112 / 0.1), transparent 30%);
     transition: opacity 0.6s ease;
   }
+  /* Hero photography: a deeper navy shade, still easing off on hover. */
+  .img-shade-strong::after {
+    background:
+      linear-gradient(to top, rgb(15 42 82 / 0.58) 0%, rgb(15 42 82 / 0.24) 38%, rgb(15 42 82 / 0.08) 68%, transparent 100%),
+      linear-gradient(to bottom, rgb(23 59 112 / 0.16), transparent 38%);
+  }
   .img-zoom:hover::after,
   .img-zoom:focus-within::after {
     opacity: 0.35;
