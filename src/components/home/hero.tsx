@@ -28,7 +28,7 @@ export function Hero() {
         </div>
 
         <Reveal className="lg:col-span-6" delay={0.1} distance={30} duration={1}>
-          <div className="relative mx-auto grid max-w-xl grid-cols-12 gap-3 sm:gap-4 lg:ms-auto lg:max-w-none">
+          <div className="relative mx-auto grid max-w-xl grid-cols-12 gap-3 sm:gap-4 lg:ms-auto lg:max-w-[88%]">
             <div className="img-zoom relative col-span-8 aspect-[4/5] overflow-hidden bg-offwhite">
               <Image
                 src="/images/hero/gift-exchange.jpg"
