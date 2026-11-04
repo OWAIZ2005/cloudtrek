@@ -66,10 +66,10 @@ export default function ServicesPage() {
                 <div className="mt-8"><CtaLink href={s.cta.href} variant="navy">{s.cta.label}</CtaLink></div>
               </Reveal>
               <Reveal className={`grid grid-cols-5 gap-3 lg:col-span-7 ${i % 2 ? "lg:order-1" : ""}`} delay={0.1} distance={30}>
-                <div className="img-zoom relative col-span-3 aspect-[4/5] overflow-hidden bg-offwhite">
+                <div className="img-zoom img-fade relative col-span-3 aspect-[4/5] overflow-hidden bg-offwhite">
                   <Image src={s.images[0]} alt={`${s.title} imagery`} fill sizes="(min-width:1024px) 34vw, 60vw" className="object-cover" />
                 </div>
-                <div className="img-zoom relative col-span-2 mt-12 aspect-square overflow-hidden bg-offwhite">
+                <div className="img-zoom img-fade relative col-span-2 mt-12 aspect-square overflow-hidden bg-offwhite">
                   <Image src={s.images[1]} alt="" fill sizes="(min-width:1024px) 22vw, 40vw" className="object-cover" />
                 </div>
               </Reveal>

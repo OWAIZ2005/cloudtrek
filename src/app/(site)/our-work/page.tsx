@@ -28,11 +28,11 @@ export default async function WorkPage() {
           <Reveal key={p.id} distance={28}>
             <article id={p.slug} className="grid scroll-mt-28 gap-8 lg:grid-cols-12 lg:gap-12">
               <div className={`grid grid-cols-5 gap-3 lg:col-span-8 ${i % 2 ? "lg:order-2" : ""}`}>
-                <div className={`img-zoom relative aspect-[4/3] overflow-hidden bg-offwhite ${p.images[1] ? "col-span-3" : "col-span-5"}`}>
+                <div className={`img-zoom img-fade img-fade-soft relative aspect-[4/3] overflow-hidden bg-offwhite ${p.images[1] ? "col-span-3" : "col-span-5"}`}>
                   <Image src={p.images[0]} alt={`${p.title}, main image`} fill sizes="(min-width:1024px) 40vw, 90vw" className="object-cover" />
                 </div>
                 {p.images[1] && (
-                  <div className="img-zoom relative col-span-2 aspect-square self-end overflow-hidden bg-offwhite">
+                  <div className="img-zoom img-fade relative col-span-2 aspect-square self-end overflow-hidden bg-offwhite">
                     <Image src={p.images[1]} alt={`${p.title}, detail`} fill sizes="(min-width:1024px) 25vw, 40vw" className="object-cover" />
                   </div>
                 )}

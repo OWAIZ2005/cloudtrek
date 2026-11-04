@@ -25,7 +25,7 @@ export function Divisions() {
           <Reveal key={d.slug} delay={i * 0.12}>
             <article className="group flex h-full flex-col">
               <Reveal wipe="up" distance={0} initialOpacity={1} duration={1.1}>
-                <Link href={d.href} className="img-zoom relative block aspect-[4/5] overflow-hidden bg-offwhite" aria-label={d.title}>
+                <Link href={d.href} className="img-zoom img-fade relative block aspect-[4/5] overflow-hidden bg-offwhite" aria-label={d.title}>
                   <Image src={d.image} alt="" fill sizes="(min-width:768px) 33vw, 100vw" className="object-cover" />
                   <span className="absolute start-4 top-4 bg-white px-2.5 py-1 text-[11px] font-semibold tracking-widest text-navy">0{i + 1}</span>
                 </Link>
@@ -155,7 +155,7 @@ export function GiftingSection() {
             {giftingOccasions.map((g, i) => (
               <Reveal key={g.title} delay={(i % 3) * 0.08} distance={24} className={i % 4 === 1 ? "sm:mt-10" : ""}>
                 <Link href="/corporate-gifting" className="group block">
-                  <div className="img-zoom relative aspect-[4/5] overflow-hidden bg-white">
+                  <div className="img-zoom img-fade relative aspect-[4/5] overflow-hidden bg-white">
                     <Image src={g.image} alt={g.title} fill sizes="(min-width:1024px) 20vw, 33vw" className="object-cover" />
                   </div>
                   <h3 className="mt-3 text-base font-semibold leading-snug group-hover:text-brand-red">{g.title}</h3>

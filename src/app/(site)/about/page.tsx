@@ -56,7 +56,7 @@ export default function AboutPage() {
           {divisions.map((d, i) => (
             <Reveal key={d.slug} delay={i * 0.1}>
               <div className="group">
-                <div className="img-zoom relative aspect-[4/3] overflow-hidden bg-offwhite"><Image src={d.imageWide} alt="" fill sizes="(min-width:768px) 33vw, 100vw" className="object-cover" /></div>
+                <div className="img-zoom img-fade img-fade-soft relative aspect-[4/3] overflow-hidden bg-offwhite"><Image src={d.imageWide} alt="" fill sizes="(min-width:768px) 33vw, 100vw" className="object-cover" /></div>
                 <h3 className="mt-5 text-xl font-semibold leading-snug">{d.title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{d.description}</p>
               </div>

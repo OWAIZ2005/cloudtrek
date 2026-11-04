@@ -38,7 +38,7 @@ export default async function GiftingPage() {
           {giftingOccasions.map((g, i) => (
             <Reveal key={g.title} delay={(i % 6) * 0.05} distance={20}>
               <div className="group">
-                <div className="img-zoom relative aspect-[4/5] overflow-hidden bg-offwhite">
+                <div className="img-zoom img-fade relative aspect-[4/5] overflow-hidden bg-offwhite">
                   <Image src={g.image} alt={g.title} fill sizes="(min-width:1024px) 16vw, 33vw" className="object-cover" />
                 </div>
                 <h3 className="mt-3 text-sm font-semibold leading-snug">{g.title}</h3>
@@ -63,7 +63,7 @@ export default async function GiftingPage() {
             {collections.map((c, i) => (
               <Reveal key={c.id} distance={30}>
                 <article id={c.slug} className="grid scroll-mt-28 items-center gap-8 lg:grid-cols-12 lg:gap-14">
-                  <div className={`img-zoom relative aspect-[4/3] overflow-hidden bg-white lg:col-span-7 ${i % 2 ? "lg:order-2" : ""}`}>
+                  <div className={`img-zoom img-fade img-fade-soft relative aspect-[4/3] overflow-hidden bg-white lg:col-span-7 ${i % 2 ? "lg:order-2" : ""}`}>
                     <Image src={c.image} alt={c.title} fill sizes="(min-width:1024px) 58vw, 100vw" className="object-cover" />
                   </div>
                   <div className="lg:col-span-5">

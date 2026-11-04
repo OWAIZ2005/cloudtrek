@@ -30,7 +30,7 @@ export function PageHero({
         </Reveal>
         {image && (
           <Reveal className="lg:col-span-5" delay={0.1} distance={28}>
-            <div className="img-zoom relative aspect-[4/3] overflow-hidden bg-offwhite lg:aspect-[5/4]">
+            <div className="img-zoom img-fade img-fade-soft relative aspect-[4/3] overflow-hidden bg-offwhite lg:aspect-[5/4]">
               <Image src={image} alt={imageAlt} fill priority sizes="(min-width:1024px) 40vw, 100vw" className="object-cover" />
             </div>
           </Reveal>
