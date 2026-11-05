@@ -1,0 +1,248 @@
+import type { Locale } from "@/types";
+
+/**
+ * Single source of truth for UI copy in English and Arabic.
+ * `ar` is typed as `Messages`, so a missing Arabic string is a compile error.
+ * Arabic is written as natural business Arabic for a Bahrain-based B2B audience;
+ * have Cloud Trek review wording that carries brand voice before launch.
+ */
+
+const en = {
+  brand: { name: "Cloud Trek", location: "Kingdom of Bahrain", tagline: "For Events Management, Publicity and Advertising" },
+  meta: {
+    siteTitle: "Cloud Trek | Corporate Gifting & Promotional Products, Bahrain",
+    siteDescription:
+      "Cloud Trek is a Bahrain-based B2B partner for promotional products, corporate gifting, events management, publicity and advertising.",
+    products: { title: "Products", description: "Browse corporate stationery, tech, drinkware, bags, apparel, gift sets and awards. Customizable promotional products with quotation-based pricing." },
+    gifting: { title: "Corporate Gifting", description: "Employee welcome kits, executive gifts, client appreciation, festive and event gifting, customized and branded for your organisation in Bahrain." },
+    services: { title: "Services", description: "Promotional products and merchandise, events management, and advertising and publicity: three divisions from one Bahrain-based partner." },
+    work: { title: "Our Work", description: "Project showcase: corporate gifting, events and promotional merchandise by Cloud Trek." },
+    about: { title: "About Us", description: "Cloud Trek is a Bahrain-based B2B partner for promotional products, corporate gifting, events management, publicity and advertising." },
+    contact: { title: "Contact", description: "Contact Cloud Trek in Bahrain for corporate gifting, promotional products, events and advertising enquiries." },
+    quote: { title: "Request a Quote", description: "Build an enquiry list, share your customization requirements and receive a quotation from Cloud Trek." },
+    notFound: "Page not found",
+  },
+  nav: { home: "Home", products: "Products", gifting: "Corporate Gifting", services: "Services", work: "Our Work", about: "About Us", contact: "Contact" },
+  cta: {
+    quote: "Request a Quote", explore: "Explore Products", language: "العربية", menu: "Menu", close: "Close",
+    startProject: "Start Your Project", talkToUs: "Talk to us", contactUs: "Contact Us", browseProducts: "Browse products", backHome: "Back to home",
+  },
+  a11y: {
+    skip: "Skip to content", home: "Cloud Trek home", enquiryList: "Enquiry list", items: (n: number) => `${n} ${n === 1 ? "item" : "items"}`,
+    switchLang: "Switch to Arabic", mobileNav: "Mobile", primaryNav: "Primary", breadcrumb: "Breadcrumb", filterCategory: "Filter by category",
+    searchProducts: "Search products", clearSearch: "Clear search", removeImage: "Remove", showImage: (n: number) => `Show image ${n}`, viewDetails: (name: string) => `View details: ${name}`,
+  },
+  footer: {
+    navigate: "Navigate", products: "Products", services: "Services", contact: "Contact", whatsapp: "WhatsApp us",
+    rights: (y: number) => `© ${y} Cloud Trek. All rights reserved.`,
+    line: "For events management, publicity and advertising, Kingdom of Bahrain.", credit: "Link animations adapted from",
+    description: "Cloud Trek is a Bahrain-based B2B partner for promotional products, corporate gifting, events management, publicity and advertising.",
+  },
+  hero: {
+    eyebrow: "Corporate gifting · Promotional products · Bahrain",
+    title: "Make Your Brand Impossible to Forget.",
+    text: "Thoughtfully curated corporate gifts, customized merchandise and brand experiences that bring businesses closer to the people who matter.",
+    caption: "Gifting, merchandise, events and advertising: one Bahrain-based team, one consistent brand.",
+    altGift: "Two hands exchanging a beautifully wrapped corporate gift box", altKit: "Employee welcome kit with branded caps and towels",
+    altNotebook: "Leather notebook with a pen", altStrip: "Gift boxes with ribbons ready for corporate gifting",
+  },
+  home: {
+    divisions: { eyebrow: "What we do", title: "Three divisions. One brand-first partner.", intro: "From the objects people hold to the events they attend and the campaigns they see, Cloud Trek brings your brand to life across every touchpoint." },
+    stats: { aria: "Business highlights", summary: "From a single branded notebook to a full event programme, one team handles selection, branding and delivery." },
+    categories: { eyebrow: "Catalogue", title: "Explore product categories", all: "View the full catalogue", customEyebrow: "Custom requests", customTitle: "Something specific in mind?", customText: "Tell us what you need and we will source, brand and quote it.", customCta: "Request a custom quote" },
+    featured: { eyebrow: "Featured", title: "A curated selection", intro: "Quotation-based pricing, tailored to your quantities and branding.", all: "Browse all products" },
+    gifting: { eyebrow: "Corporate gifting", title: "Gifts that say the right thing, quietly.", intro: "Whether it is a first-day kit or an executive thank-you, we help you choose, brand and present gifts with the care your relationships deserve.", moments: "Moments that matter in Bahrain", plan: "Plan ahead with us: seasonal gifts selected, branded and packed for your recipient list.", cta: "Explore Gifting Solutions" },
+    custom: { eyebrow: "Customization & branding", title: "Your Brand. Your Identity. Our Craft.", intro: "Every product can carry your identity. Share your logo and brief, and we recommend the technique that suits the material and the quantity." },
+    process: { eyebrow: "How it works", title: "From first idea to doorstep, in five clear steps." },
+    why: { eyebrow: "Why Cloud Trek?", title: "A partner built around your brief." },
+    work: { eyebrow: "Selected work", title: "Project concepts", intro: "A selection of project work, from welcome kits to conference merchandise and recognition awards.", all: "View all work" },
+    position: { eyebrow: "Our positioning", statement: "We help businesses be remembered, through the things people keep, the events they attend and the campaigns they see.", caps: [
+      { t: "Promotional products", d: "Selection, sourcing and branding of merchandise across categories." },
+      { t: "Corporate gifting", d: "Gift sets, kits and hampers designed around occasions and audiences." },
+      { t: "Events & advertising", d: "Support for events, publicity and campaigns that need physical presence." },
+    ] },
+    cta: { eyebrow: "Start a conversation", title: "Let’s Create Something Worth Remembering.", text: "Tell us about your audience, quantities and timeline. We will come back with a clear quotation." },
+  },
+  products: {
+    eyebrow: "Catalogue", title: "Promotional products, curated.", intro: "Customizable products for corporate gifting, events and everyday brand visibility. Pricing is quotation-based, tailored to your quantities and branding.",
+    brandLine: "Every product can be branded with your logo. Share your quantities and artwork, and we respond with a clear quotation.",
+    searchPlaceholder: "Search products, e.g. notebook, bottle, award", sort: "Sort", all: "All",
+    sortOptions: { featured: "Featured first", name: "Name A–Z", moq: "Lowest minimum order" },
+    featuredSelection: "Featured selection", count: (n: number): string => (n === 1 ? "product" : "products"), matching: "matching", moreBelow: (n: number) => `${n} more below`,
+    emptyTitle: "No products match your search", emptyText: "Try a broader term or clear the filters. If you are looking for something specific, we can source it for you.", clear: "Clear filters", customQuote: "Request a custom quote",
+    featuredBadge: "Featured", viewDetails: "View details", details: "Details", customizable: "Customizable:", more: (n: number) => `+${n} more`, moq: "MOQ", add: "Add", added: "Added", addToEnquiry: "Add to enquiry", inList: "In enquiry list · View",
+    imageSample: "", crumbHome: "Home", pricing: "Pricing", quotationBased: "Quotation-based", minOrder: "Minimum order", units: (n: number) => `${n} units`, onRequest: "On request",
+    requestQuote: "Request a Quote", options: "Customization options", specs: "Specifications", related: "You may also like", detailLine: "Branded with your identity and prepared to your brief, from first sample to delivery in Bahrain.",
+    notFound: "Product not found",
+  },
+  gifting: {
+    eyebrow: "Corporate gifting", title: "Gifts worth opening.", intro: "From employee onboarding to executive appreciation, we help you select, brand and present gifts that reflect well on your organisation.", cta: "Start a Gifting Enquiry",
+    altHero: "Two hands exchanging a wrapped gift box",
+    occEyebrow: "Gifting for every audience", occTitle: "Six ways to say thank you.",
+    colEyebrow: "Gifting collections", colTitle: "Starting points for your brief.", colIntro: "Contents are configured around your brand, audience and budget.", collection: "Collection", suited: "Suited to:", suggested: "Suggested products", enquire: "Enquire about this collection",
+    momentsEyebrow: "Local moments", momentsTitle: "Gifting around Bahrain’s calendar.", momentsText: "Whether it is Ramadan, Eid or Bahrain National Day, we plan gifting around your calendar, your audience and your brand.",
+  },
+  services: { eyebrow: "Services", title: "Brand presence, in every dimension.", intro: "Cloud Trek brings promotional products, events management and advertising together, so your brand looks and feels consistent wherever people meet it.", imagery: "imagery" },
+  work: { eyebrow: "Our work", title: "Ideas, made tangible.", intro: "A selection of project work, from welcome kits to conference merchandise and recognition awards.", line: "Every project starts with a brief: audience, quantity, timeline and brand. We handle the rest, from sourcing to delivery.", main: "main image", detail: "detail" },
+  about: {
+    eyebrow: "About Cloud Trek", title: "A brand-first partner for Bahrain's businesses.", intro: "Cloud Trek works with organisations to turn brand identity into things people hold, events they attend and campaigns they see.",
+    altHero: "Colleagues sharing a gift box in an office", whoTitle: "Who we are",
+    p1: "Cloud Trek is a B2B company based in the Kingdom of Bahrain, working across promotional products, corporate gifting, events management, publicity and advertising.",
+    p2: "We believe a brand is most convincing when it is consistent: on the notebook on a client’s desk, the lanyard at a conference and the display at an exhibition.",
+    approach: [
+      { t: "What we focus on", d: "Helping organisations in Bahrain turn their identity into products, events and campaigns that people notice and keep." },
+      { t: "How we work", d: "We listen to the brief, recommend the right products and techniques, show you the artwork, and deliver what we agreed." },
+    ],
+    divisionsEyebrow: "Business divisions", divisionsTitle: "Three divisions, one standard.", valuesEyebrow: "Values", valuesTitle: "What guides our work.", projectQ: "Have a project in mind?",
+  },
+  contact: {
+    eyebrow: "Contact", title: "Let's talk about your project.", intro: "Share a few details and we will come back to you. For product-specific requests, use the quote form for a faster response.",
+    lead: "Tell us about your project, including quantities, timeline and branding, and our team will get back to you with the next steps.",
+    email: "Email", phone: "Phone", whatsapp: "WhatsApp", location: "Location", instagram: "Instagram", whatsappChat: "Chat on WhatsApp", mapTitle: "Cloud Trek location map", sendTitle: "Send us a message",
+  },
+  quote: {
+    eyebrow: "Request a quote", title: "Tell us what you need.", intro: "Build your enquiry list, add your customization requirements and send it through. Pricing is quotation-based and tailored to your quantities and branding.",
+    s1: "1. Your products", s1Sub: "Add one or more products with estimated quantities.", s2: "2. Your details", s3: "3. Customization & notes",
+    emptyList: "Your enquiry list is empty. Choose a product below or", browse: "browse the catalogue", pickerPlaceholder: "Add a product from the catalogue…", add: "Add",
+    qty: "Estimated quantity", qtyDown: "Decrease quantity", qtyUp: "Increase quantity", itemNote: "Customization for this item", itemNotePh: "e.g. engraved logo, navy colour", remove: (n: string) => `Remove ${n}`,
+    f: { name: "Full name", company: "Company name", email: "Business email", phone: "Phone number", budget: "Budget range", date: "Required delivery date", requirements: "Customization requirements", requirementsHint: "Logo placement, colours, personalisation, packaging…", notes: "Additional notes", file: "Logo or reference file", message: "How can we help?", subject: "Subject" },
+    optional: "optional", select: "Select…", fileHint: (mb: number) => `PNG, JPG, WebP, SVG, PDF, AI, EPS or PSD · up to ${mb} MB`, chooseFile: "Choose file", noFile: "No file selected",
+    submit: "Submit enquiry", sending: "Sending…", noPayment: "There is no payment at this stage. We will respond with a quotation.",
+    send: "Send message", messageSent: "Message received.", subjectPh: "e.g. Corporate gifting for Ramadan",
+    thanksTitle: "Thank you. Your enquiry is in.", thanksText: "Your reference is", thanksText2: "We will review your requirements and come back to you with a quotation.",
+    emailDelayed: "Your enquiry has been saved. Our notification to the team is delayed, so please contact us directly if it is urgent.",
+    demoMode: "Demo mode:", demoQuote: "the database is not connected on this deployment, so this enquiry was validated but not stored.", demoContact: "the database is not connected, so this message was validated but not stored.",
+    contactDone: "We will be in touch shortly.", contactRef: "Reference", continueBrowsing: "Continue browsing",
+    errors: {
+      name_required: "Please enter your full name", company_required: "Please enter your company name", email_invalid: "Please enter a valid business email", phone_invalid: "Please enter a valid phone number",
+      items_required: "Add at least one product to your enquiry", message_required: "Please tell us how we can help", date_invalid: "Invalid date", qty_invalid: "Quantity must be a whole number of at least 1",
+      file_too_large: "File is too large. The maximum size is 5 MB.", file_type: "Unsupported file type. Please upload PNG, JPG, WebP, SVG, PDF, AI, EPS or PSD.",
+      fields: "Please check the highlighted fields.", rate: "Too many submissions. Please try again shortly.", server: "We could not save your enquiry. Please try again.", network: "We could not reach the server. Please check your connection and try again.",
+      upload: "We could not store your file. Please try again or submit without it.", generic: "Something went wrong. Please try again.", invalid: "Invalid request.",
+    },
+  },
+  notFound: { eyebrow: "Error 404", title: "This page has wandered off.", text: "The page you are looking for does not exist or has moved." },
+  budgets: ["Under BHD 500", "BHD 500 – 1,000", "BHD 1,000 – 2,500", "BHD 2,500 – 5,000", "BHD 5,000+", "Not sure yet"],
+};
+
+export type Messages = typeof en;
+
+const ar: Messages = {
+  brand: { name: "كلاودترك", location: "مملكة البحرين", tagline: "لتنظيم المعارض والدعاية والإعلان" },
+  meta: {
+    siteTitle: "كلاودترك | الهدايا المؤسسية والمنتجات الترويجية في البحرين",
+    siteDescription: "كلاودترك شريك لقطاع الأعمال في مملكة البحرين في مجالات المنتجات الترويجية والهدايا المؤسسية وتنظيم الفعاليات والدعاية والإعلان.",
+    products: { title: "المنتجات", description: "تصفّح القرطاسية المؤسسية والإلكترونيات وأدوات الشرب والحقائب والملابس ومجموعات الهدايا والجوائز. منتجات ترويجية قابلة للتخصيص بتسعير حسب الطلب." },
+    gifting: { title: "الهدايا المؤسسية", description: "حقائب ترحيب الموظفين وهدايا كبار التنفيذيين وتقدير العملاء وهدايا المناسبات والفعاليات، مخصّصة وبعلامة مؤسستكم في البحرين." },
+    services: { title: "الخدمات", description: "المنتجات الترويجية والبضائع الدعائية، وتنظيم الفعاليات، والدعاية والإعلان: ثلاثة أقسام لدى شريك واحد في البحرين." },
+    work: { title: "أعمالنا", description: "عرض لأعمالنا في الهدايا المؤسسية والفعاليات والمنتجات الترويجية من كلاودترك." },
+    about: { title: "من نحن", description: "كلاودترك شريك لقطاع الأعمال في مملكة البحرين في مجالات المنتجات الترويجية والهدايا المؤسسية وتنظيم الفعاليات والدعاية والإعلان." },
+    contact: { title: "اتصل بنا", description: "تواصل مع كلاودترك في البحرين لاستفسارات الهدايا المؤسسية والمنتجات الترويجية والفعاليات والدعاية والإعلان." },
+    quote: { title: "اطلب عرض سعر", description: "كوّن قائمة طلبك وحدّد متطلبات التخصيص واحصل على عرض سعر من كلاودترك." },
+    notFound: "الصفحة غير موجودة",
+  },
+  nav: { home: "الرئيسية", products: "المنتجات", gifting: "الهدايا المؤسسية", services: "الخدمات", work: "أعمالنا", about: "من نحن", contact: "اتصل بنا" },
+  cta: {
+    quote: "اطلب عرض سعر", explore: "استكشف المنتجات", language: "English", menu: "القائمة", close: "إغلاق",
+    startProject: "ابدأ مشروعك", talkToUs: "تحدّث إلينا", contactUs: "تواصل معنا", browseProducts: "تصفّح المنتجات", backHome: "العودة إلى الرئيسية",
+  },
+  a11y: {
+    skip: "انتقل إلى المحتوى", home: "كلاودترك – الصفحة الرئيسية", enquiryList: "قائمة الطلب", items: (n) => (n === 1 ? "عنصر واحد" : n === 2 ? "عنصران" : `${n} عناصر`),
+    switchLang: "التبديل إلى الإنجليزية", mobileNav: "قائمة الجوال", primaryNav: "القائمة الرئيسية", breadcrumb: "مسار التنقل", filterCategory: "التصفية حسب الفئة",
+    searchProducts: "البحث في المنتجات", clearSearch: "مسح البحث", removeImage: "إزالة", showImage: (n) => `عرض الصورة ${n}`, viewDetails: (name) => `عرض التفاصيل: ${name}`,
+  },
+  footer: {
+    navigate: "التنقل", products: "المنتجات", services: "الخدمات", contact: "التواصل", whatsapp: "راسلنا عبر واتساب",
+    rights: (y) => `© ${y} كلاودترك. جميع الحقوق محفوظة.`,
+    line: "لتنظيم المعارض والدعاية والإعلان – مملكة البحرين.", credit: "تأثيرات الروابط مقتبسة من",
+    description: "كلاودترك شريك لقطاع الأعمال في مملكة البحرين في مجالات المنتجات الترويجية والهدايا المؤسسية وتنظيم الفعاليات والدعاية والإعلان.",
+  },
+  hero: {
+    eyebrow: "هدايا مؤسسية · منتجات ترويجية · البحرين",
+    title: "اجعل علامتك التجارية لا تُنسى.",
+    text: "هدايا مؤسسية منتقاة بعناية، ومنتجات مخصّصة، وتجارب للعلامة التجارية تقرّب شركتك ممّن يهمّها أمرهم.",
+    caption: "الهدايا والمنتجات الدعائية والفعاليات والإعلان: فريق واحد في البحرين، وهوية واحدة متسقة.",
+    altGift: "يدان تتبادلان علبة هدايا مؤسسية مغلّفة بأناقة", altKit: "حقيبة ترحيب للموظفين تضم قبعات ومناشف بشعار الشركة",
+    altNotebook: "دفتر جلدي مع قلم", altStrip: "علب هدايا مزيّنة بالأشرطة جاهزة للإهداء المؤسسي",
+  },
+  home: {
+    divisions: { eyebrow: "ما نقدّمه", title: "ثلاثة أقسام. شريك واحد تأتي علامتك عنده أولاً.", intro: "من المنتجات التي يحملها الناس إلى الفعاليات التي يحضرونها والحملات التي يرونها، تُجسّد كلاودترك علامتك التجارية في كل نقطة تواصل." },
+    stats: { aria: "لمحات عن الأعمال", summary: "من دفتر واحد يحمل شعارك إلى برنامج فعالية متكامل، يتولى فريق واحد الاختيار والتخصيص والتسليم." },
+    categories: { eyebrow: "الكتالوج", title: "استكشف فئات المنتجات", all: "عرض الكتالوج كاملاً", customEyebrow: "طلبات خاصة", customTitle: "هل لديك طلب محدّد؟", customText: "أخبرنا بما تحتاجه، ونتولى توفيره وتخصيصه وتسعيره.", customCta: "اطلب عرض سعر خاص" },
+    featured: { eyebrow: "مختارات", title: "تشكيلة منتقاة", intro: "تسعير حسب الطلب، يُحدَّد وفق كمياتك وتخصيصك.", all: "تصفّح جميع المنتجات" },
+    gifting: { eyebrow: "الهدايا المؤسسية", title: "هدايا تقول المطلوب بهدوء.", intro: "سواء كانت حقيبة ترحيب في اليوم الأول أو شكراً لأحد كبار التنفيذيين، نساعدك على اختيار الهدايا وتخصيصها وتقديمها بالعناية التي تستحقها علاقاتك.", moments: "مناسبات لها مكانتها في البحرين", plan: "خطّط معنا مبكراً: هدايا موسمية تُختار وتُخصَّص وتُجهَّز لقائمة المستلمين لديك.", cta: "استكشف حلول الهدايا" },
+    custom: { eyebrow: "التخصيص وطباعة العلامة", title: "علامتك. هويتك. وصنعتنا.", intro: "يمكن لكل منتج أن يحمل هويتك. شاركنا شعارك وتفاصيل طلبك، ونوصي بالتقنية الأنسب للخامة وللكمية." },
+    process: { eyebrow: "آلية العمل", title: "من الفكرة الأولى إلى باب مكتبك في خمس خطوات واضحة." },
+    why: { eyebrow: "لماذا كلاودترك؟", title: "شريك يبني عمله حول متطلباتك." },
+    work: { eyebrow: "أعمال مختارة", title: "تصوّرات مشاريع", intro: "مجموعة من أعمال المشاريع، من حقائب الترحيب إلى منتجات المؤتمرات وجوائز التكريم.", all: "عرض جميع الأعمال" },
+    position: { eyebrow: "توجّهنا", statement: "نساعد الشركات على ترك أثر لا يُنسى، عبر ما يحتفظ به الناس، والفعاليات التي يحضرونها، والحملات التي يشاهدونها.", caps: [
+      { t: "المنتجات الترويجية", d: "اختيار المنتجات الدعائية وتوريدها وتخصيصها بشعارك في مختلف الفئات." },
+      { t: "الهدايا المؤسسية", d: "مجموعات هدايا وحقائب وسلال مصمّمة حول المناسبات والفئات المستهدفة." },
+      { t: "الفعاليات والإعلان", d: "دعم للفعاليات والدعاية والحملات التي تحتاج إلى حضور ملموس." },
+    ] },
+    cta: { eyebrow: "ابدأ الحوار", title: "لنصنع معاً ما يستحق أن يُتذكَّر.", text: "حدّثنا عن جمهورك وكمياتك وجدولك الزمني، وسنعود إليك بعرض سعر واضح." },
+  },
+  products: {
+    eyebrow: "الكتالوج", title: "منتجات ترويجية منتقاة بعناية.", intro: "منتجات قابلة للتخصيص للهدايا المؤسسية والفعاليات وحضور علامتك اليومي. التسعير حسب الطلب، ويُحدَّد وفق كمياتك وتخصيصك.",
+    brandLine: "يمكن طباعة شعارك على كل منتج. أرسل الكميات والتصاميم، ونردّ عليك بعرض سعر واضح.",
+    searchPlaceholder: "ابحث عن منتج، مثل: دفتر، قارورة، جائزة", sort: "الترتيب", all: "الكل",
+    sortOptions: { featured: "المميّز أولاً", name: "الاسم (أ – ي)", moq: "أقل حد أدنى للطلب" },
+    featuredSelection: "مختارات مميّزة", count: (n) => (n === 1 ? "منتج" : n === 2 ? "منتجان" : n >= 3 && n <= 10 ? "منتجات" : "منتجاً"), matching: "مطابقة لـ", moreBelow: (n) => `${n} أخرى بالأسفل`,
+    emptyTitle: "لا توجد منتجات مطابقة لبحثك", emptyText: "جرّب كلمة أعم أو امسح عوامل التصفية. وإن كنت تبحث عن شيء محدد فيمكننا توفيره لك.", clear: "مسح التصفية", customQuote: "اطلب عرض سعر خاص",
+    featuredBadge: "مميّز", viewDetails: "عرض التفاصيل", details: "التفاصيل", customizable: "قابل للتخصيص:", more: (n) => `+${n} أخرى`, moq: "الحد الأدنى", add: "إضافة", added: "أُضيف", addToEnquiry: "أضف إلى الطلب", inList: "ضمن قائمة الطلب · عرض",
+    imageSample: "", crumbHome: "الرئيسية", pricing: "التسعير", quotationBased: "حسب عرض السعر", minOrder: "الحد الأدنى للطلب", units: (n) => `${n} قطعة`, onRequest: "عند الطلب",
+    requestQuote: "اطلب عرض سعر", options: "خيارات التخصيص", specs: "المواصفات", related: "قد يعجبك أيضاً", detailLine: "مخصّص بهويتك ومجهّز وفق طلبك، من العيّنة الأولى حتى التسليم في البحرين.",
+    notFound: "المنتج غير موجود",
+  },
+  gifting: {
+    eyebrow: "الهدايا المؤسسية", title: "هدايا تستحق أن تُفتح.", intro: "من استقبال الموظفين الجدد إلى تقدير كبار التنفيذيين، نساعدك على اختيار الهدايا وتخصيصها وتقديمها بما يليق بمؤسستك.", cta: "ابدأ طلب هدايا",
+    altHero: "يدان تتبادلان علبة هدية مغلّفة",
+    occEyebrow: "هدايا لكل فئة", occTitle: "ست طرق لقول شكراً.",
+    colEyebrow: "مجموعات الهدايا", colTitle: "نقاط انطلاق لطلبك.", colIntro: "تُصمَّم محتويات كل مجموعة وفق علامتك وجمهورك وميزانيتك.", collection: "المجموعة", suited: "مناسبة لـ:", suggested: "منتجات مقترحة", enquire: "استفسر عن هذه المجموعة",
+    momentsEyebrow: "مناسبات محلية", momentsTitle: "هدايا على مدار التقويم البحريني.", momentsText: "سواء كانت رمضان أو العيد أو اليوم الوطني للبحرين، نخطّط للهدايا وفق تقويمك وجمهورك وعلامتك.",
+  },
+  services: { eyebrow: "الخدمات", title: "حضور للعلامة التجارية بكل أبعاده.", intro: "تجمع كلاودترك بين المنتجات الترويجية وتنظيم الفعاليات والإعلان، لتظهر علامتك بالأسلوب نفسه أينما التقاها الناس.", imagery: "صور" },
+  work: { eyebrow: "أعمالنا", title: "أفكار تتحوّل إلى واقع.", intro: "مجموعة من أعمال المشاريع، من حقائب الترحيب إلى منتجات المؤتمرات وجوائز التكريم.", line: "يبدأ كل مشروع بطلب واضح: الجمهور والكمية والجدول الزمني والعلامة. ونتولى الباقي، من التوريد حتى التسليم.", main: "الصورة الرئيسية", detail: "تفصيل" },
+  about: {
+    eyebrow: "عن كلاودترك", title: "شريك تأتي علامتك عنده أولاً، لشركات البحرين.", intro: "تعمل كلاودترك مع المؤسسات لتحويل هوية العلامة إلى منتجات يحملها الناس وفعاليات يحضرونها وحملات يشاهدونها.",
+    altHero: "زملاء يتبادلون علبة هدية في مكتب", whoTitle: "من نحن",
+    p1: "كلاودترك شركة تخدم قطاع الأعمال في مملكة البحرين، وتعمل في مجالات المنتجات الترويجية والهدايا المؤسسية وتنظيم الفعاليات والدعاية والإعلان.",
+    p2: "نؤمن بأن العلامة التجارية أكثر إقناعاً حين تكون متسقة: على الدفتر فوق مكتب العميل، وعلى حامل البطاقة في المؤتمر، وفي ركن العرض في المعرض.",
+    approach: [
+      { t: "ما نركّز عليه", d: "مساعدة المؤسسات في البحرين على تحويل هويتها إلى منتجات وفعاليات وحملات يلاحظها الناس ويحتفظون بها." },
+      { t: "كيف نعمل", d: "نصغي إلى طلبك، ونوصي بالمنتجات والتقنيات المناسبة، ونعرض عليك التصميم، ثم نسلّم ما اتفقنا عليه." },
+    ],
+    divisionsEyebrow: "أقسام الأعمال", divisionsTitle: "ثلاثة أقسام بمعيار واحد.", valuesEyebrow: "القيم", valuesTitle: "ما يوجّه عملنا.", projectQ: "هل لديك مشروع في ذهنك؟",
+  },
+  contact: {
+    eyebrow: "اتصل بنا", title: "لنتحدث عن مشروعك.", intro: "شاركنا بعض التفاصيل وسنعود إليك. وللطلبات الخاصة بمنتجات محددة، استخدم نموذج عرض السعر للحصول على ردّ أسرع.",
+    lead: "حدّثنا عن مشروعك، بما في ذلك الكميات والجدول الزمني والتخصيص، وسيتواصل معك فريقنا بالخطوات التالية.",
+    email: "البريد الإلكتروني", phone: "الهاتف", whatsapp: "واتساب", location: "الموقع", instagram: "إنستغرام", whatsappChat: "راسلنا عبر واتساب", mapTitle: "خريطة موقع كلاودترك", sendTitle: "أرسل لنا رسالة",
+  },
+  quote: {
+    eyebrow: "اطلب عرض سعر", title: "أخبرنا بما تحتاجه.", intro: "كوّن قائمة طلبك، وأضف متطلبات التخصيص، ثم أرسلها. التسعير حسب الطلب ويُحدَّد وفق كمياتك وتخصيصك.",
+    s1: "١. منتجاتك", s1Sub: "أضف منتجاً أو أكثر مع الكميات التقديرية.", s2: "٢. بياناتك", s3: "٣. التخصيص والملاحظات",
+    emptyList: "قائمة طلبك فارغة. اختر منتجاً من الأسفل أو", browse: "تصفّح الكتالوج", pickerPlaceholder: "أضف منتجاً من الكتالوج…", add: "إضافة",
+    qty: "الكمية التقديرية", qtyDown: "تقليل الكمية", qtyUp: "زيادة الكمية", itemNote: "التخصيص لهذا المنتج", itemNotePh: "مثال: شعار محفور، لون كحلي", remove: (n) => `إزالة ${n}`,
+    f: { name: "الاسم الكامل", company: "اسم الشركة", email: "البريد الإلكتروني للعمل", phone: "رقم الهاتف", budget: "نطاق الميزانية", date: "تاريخ التسليم المطلوب", requirements: "متطلبات التخصيص", requirementsHint: "موضع الشعار، الألوان، الأسماء الشخصية، التغليف…", notes: "ملاحظات إضافية", file: "ملف الشعار أو المرجع", message: "كيف يمكننا مساعدتك؟", subject: "الموضوع" },
+    optional: "اختياري", select: "اختر…", fileHint: (mb) => `PNG أو JPG أو WebP أو SVG أو PDF أو AI أو EPS أو PSD · حتى ${mb} ميجابايت`, chooseFile: "اختر ملفاً", noFile: "لم يُختر ملف",
+    submit: "إرسال الطلب", sending: "جارٍ الإرسال…", noPayment: "لا يوجد أي دفع في هذه المرحلة. سنردّ عليك بعرض سعر.",
+    send: "إرسال الرسالة", messageSent: "تم استلام رسالتك.", subjectPh: "مثال: هدايا مؤسسية لشهر رمضان",
+    thanksTitle: "شكراً لك. تم استلام طلبك.", thanksText: "رقم مرجع طلبك هو", thanksText2: "سنراجع متطلباتك ونعود إليك بعرض سعر.",
+    emailDelayed: "تم حفظ طلبك. تأخّر إشعار الفريق به، لذا يُرجى التواصل معنا مباشرة إن كان الأمر عاجلاً.",
+    demoMode: "وضع تجريبي:", demoQuote: "قاعدة البيانات غير متصلة في هذا النشر، لذا جرى التحقق من الطلب دون حفظه.", demoContact: "قاعدة البيانات غير متصلة، لذا جرى التحقق من الرسالة دون حفظها.",
+    contactDone: "سنتواصل معك قريباً.", contactRef: "المرجع", continueBrowsing: "متابعة التصفّح",
+    errors: {
+      name_required: "يُرجى إدخال اسمك الكامل", company_required: "يُرجى إدخال اسم الشركة", email_invalid: "يُرجى إدخال بريد إلكتروني صحيح للعمل", phone_invalid: "يُرجى إدخال رقم هاتف صحيح",
+      items_required: "أضف منتجاً واحداً على الأقل إلى طلبك", message_required: "يُرجى إخبارنا كيف يمكننا مساعدتك", date_invalid: "تاريخ غير صالح", qty_invalid: "يجب أن تكون الكمية عدداً صحيحاً لا يقل عن 1",
+      file_too_large: "حجم الملف كبير. الحد الأقصى 5 ميجابايت.", file_type: "نوع الملف غير مدعوم. يُرجى رفع PNG أو JPG أو WebP أو SVG أو PDF أو AI أو EPS أو PSD.",
+      fields: "يُرجى مراجعة الحقول المحدّدة.", rate: "عدد الطلبات كبير. يُرجى المحاولة بعد قليل.", server: "تعذّر حفظ طلبك. يُرجى المحاولة مرة أخرى.", network: "تعذّر الاتصال بالخادم. تحقق من اتصالك وحاول مرة أخرى.",
+      upload: "تعذّر حفظ ملفك. حاول مرة أخرى أو أرسل الطلب بدونه.", generic: "حدث خطأ ما. يُرجى المحاولة مرة أخرى.", invalid: "طلب غير صالح.",
+    },
+  },
+  notFound: { eyebrow: "خطأ 404", title: "هذه الصفحة غير موجودة.", text: "الصفحة التي تبحث عنها غير موجودة أو تم نقلها." },
+  budgets: ["أقل من 500 د.ب", "من 500 إلى 1,000 د.ب", "من 1,000 إلى 2,500 د.ب", "من 2,500 إلى 5,000 د.ب", "أكثر من 5,000 د.ب", "لم أحدّد بعد"],
+};
+
+export const messages: Record<Locale, Messages> = { en, ar };
+export const getMessagesFor = (l: Locale): Messages => messages[l] ?? en;

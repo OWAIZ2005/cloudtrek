@@ -1,8 +1,8 @@
 import "server-only";
 import type { SupabaseClient } from "@supabase/supabase-js";
-import { demoCategories, demoEnquiries, demoMonthlyEnquiries, demoProducts, demoProjects } from "@/data/demo-data";
-import { mapCategory, mapEnquiry, mapProduct, mapProject } from "@/lib/supabase/mappers";
-import { ENQUIRY_STATUSES, type Category, type Enquiry, type PortfolioProject, type Product } from "@/types";
+import { demoCategories, demoEnquiries, demoMessages, demoMonthlyEnquiries, demoProducts, demoProjects } from "@/data/demo-data";
+import { mapCategory, mapEnquiry, mapMessage, mapProduct, mapProject } from "@/lib/supabase/mappers";
+import { ENQUIRY_STATUSES, type Category, type ContactMessage, type Enquiry, type PortfolioProject, type Product } from "@/types";
 import type { AdminContext } from "./auth";
 
 
@@ -54,10 +54,25 @@ export async function adminEnquiry(ctx: AdminContext, id: string): Promise<Enqui
   return e;
 }
 
+export async function adminMessages(ctx: AdminContext): Promise<ContactMessage[]> {
+  if (ctx.mode === "demo") return demoMessages;
+  const { data } = await ctx.db.from("contact_messages").select("*").order("created_at", { ascending: false }).limit(500);
+  return (data ?? []).map(mapMessage);
+}
+
+export async function adminMessage(ctx: AdminContext, id: string): Promise<ContactMessage | null> {
+  if (ctx.mode === "demo") return demoMessages.find((m) => m.id === id) ?? null;
+  const { data } = await ctx.db.from("contact_messages").select("*").eq("id", id).maybeSingle();
+  return data ? mapMessage(data) : null;
+}
+
 export interface Overview {
   totalProducts: number;
   totalEnquiries: number;
   pendingEnquiries: number;
+  totalMessages: number;
+  newMessages: number;
+  emailFailures: number;
   statusDistribution: { status: string; count: number }[];
   categoryDistribution: { name: string; count: number }[];
   monthly: { month: string; enquiries: number }[];
@@ -66,7 +81,7 @@ export interface Overview {
 }
 
 export async function adminOverview(ctx: AdminContext): Promise<Overview> {
-  const [products, categories, enquiries] = await Promise.all([adminProducts(ctx), adminCategories(ctx), adminEnquiries(ctx)]);
+  const [products, categories, enquiries, messages] = await Promise.all([adminProducts(ctx), adminCategories(ctx), adminEnquiries(ctx), adminMessages(ctx)]);
   const isDemo = ctx.mode === "demo";
 
   const statusDistribution = ENQUIRY_STATUSES.map((s) => ({ status: s, count: enquiries.filter((e) => e.status === s).length }));
@@ -91,6 +106,9 @@ export async function adminOverview(ctx: AdminContext): Promise<Overview> {
     totalProducts: products.length,
     totalEnquiries: enquiries.length,
     pendingEnquiries: enquiries.filter((e) => e.status === "new" || e.status === "contacted").length,
+    totalMessages: messages.length,
+    newMessages: messages.filter((m) => m.status === "new").length,
+    emailFailures: enquiries.filter((e) => e.emailStatus === "failed").length + messages.filter((m) => m.emailStatus === "failed").length,
     statusDistribution,
     categoryDistribution,
     monthly,

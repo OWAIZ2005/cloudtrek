@@ -1,4 +1,7 @@
+"use client";
+
 import { cn } from "@/lib/utils";
+import { useI18n } from "@/i18n/provider";
 
 export const inputCls =
   "h-12 w-full border border-input bg-white px-4 text-sm outline-none transition-colors placeholder:text-muted-foreground/70 focus:border-navy focus-visible:ring-2 focus-visible:ring-navy/15 aria-[invalid=true]:border-brand-red";
@@ -20,11 +23,12 @@ export function Field({
   className?: string;
   children: React.ReactNode;
 }) {
+  const { m } = useI18n();
   return (
     <div className={cn("space-y-2", className)}>
       <label htmlFor={id} className="block text-[13px] font-medium text-navy">
         {label}
-        {required ? <span className="text-brand-red"> *</span> : <span className="font-normal text-muted-foreground"> (optional)</span>}
+        {required ? <span className="text-brand-red"> *</span> : <span className="font-normal text-muted-foreground"> ({m.quote.optional})</span>}
       </label>
       {children}
       {hint && !error && <p className="text-xs text-muted-foreground">{hint}</p>}

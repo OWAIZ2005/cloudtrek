@@ -1,11 +1,13 @@
 "use client";
 
 import CountUp from "@/components/reactbits/CountUp";
+import { useI18n } from "@/i18n/provider";
 import type { Stat } from "@/types";
 
 export function StatsGrid({ stats, counts }: { stats: Stat[]; counts: { name: string; count: number }[] }) {
+  const { m } = useI18n();
   return (
-    <section className="bg-navy text-white" aria-label="Business highlights">
+    <section className="bg-navy text-white" aria-label={m.home.stats.aria}>
       <div className="container-x py-14 lg:py-20">
         <div className="grid gap-px overflow-hidden bg-white/15 sm:grid-cols-2 lg:grid-cols-4">
           {stats.map((s) => (
@@ -19,7 +21,7 @@ export function StatsGrid({ stats, counts }: { stats: Stat[]; counts: { name: st
         </div>
 
         <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-          <p className="max-w-md text-sm leading-relaxed text-white/65">From a single branded notebook to a full event programme, one team handles selection, branding and delivery.</p>
+          <p className="max-w-md text-sm leading-relaxed text-white/65">{m.home.stats.summary}</p>
           <ul className="flex flex-wrap gap-x-5 gap-y-2 text-xs text-white/70">
             {counts.map((c) => (
               <li key={c.name}>

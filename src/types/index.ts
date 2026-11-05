@@ -10,6 +10,8 @@ export interface Category {
   image: string;
   isActive: boolean;
   isDemo?: boolean;
+  /** Arabic overrides (same record, optional). */
+  ar?: Partial<Pick<Category, "name" | "description">>;
 }
 
 export interface Spec {
@@ -32,6 +34,7 @@ export interface Product {
   /** Minimum order quantity. Only shown when known; demo values are illustrative. */
   moq?: number | null;
   isDemo?: boolean;
+  ar?: Partial<Pick<Product, "name" | "shortDescription" | "description" | "specifications" | "customizationOptions">>;
 }
 
 export interface GiftingCollection {
@@ -44,6 +47,7 @@ export interface GiftingCollection {
   image: string;
   suggestedProductSlugs: string[];
   isDemo: true;
+  ar?: Partial<Pick<GiftingCollection, "title" | "tagline" | "description" | "audience">>;
 }
 
 export interface PortfolioProject {
@@ -56,6 +60,7 @@ export interface PortfolioProject {
   details: Spec[];
   isFeatured: boolean;
   isDemo?: boolean;
+  ar?: Partial<Pick<PortfolioProject, "title" | "category" | "description" | "details">>;
 }
 
 export const ENQUIRY_STATUSES = [
@@ -84,6 +89,8 @@ export interface EnquiryItem {
   customizationNotes?: string;
 }
 
+export type EmailStatus = "pending" | "sent" | "failed";
+
 export interface Enquiry {
   id: string;
   enquiryNumber: string;
@@ -99,6 +106,9 @@ export interface Enquiry {
   createdAt: string;
   items: EnquiryItem[];
   logoUrl?: string | null;
+  emailStatus: EmailStatus;
+  emailError?: string | null;
+  emailAttempts: number;
   /** True for illustrative records that never came from a real customer. */
   isDemo: boolean;
 }
@@ -107,6 +117,7 @@ export interface Stat {
   value: number;
   suffix?: string;
   label: string;
+  ar?: { label: string };
 }
 
 export interface QuoteListItem {
@@ -116,4 +127,21 @@ export interface QuoteListItem {
   image: string;
   quantity: number;
   notes: string;
+}
+
+export interface ContactMessage {
+  id: string;
+  referenceNumber: string;
+  customerName: string;
+  email: string;
+  phone?: string | null;
+  companyName?: string | null;
+  subject?: string | null;
+  message: string;
+  status: "new" | "handled";
+  emailStatus: EmailStatus;
+  emailError?: string | null;
+  emailAttempts: number;
+  createdAt: string;
+  isDemo: boolean;
 }

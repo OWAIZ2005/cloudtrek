@@ -4,23 +4,24 @@ import { PageHero } from "@/components/shared/page-hero";
 import { Reveal } from "@/components/shared/reveal";
 import { FinalCta } from "@/components/home/final-cta";
 import { getProjects } from "@/lib/data";
+import { getI18n } from "@/i18n/get-locale";
 
-export const metadata: Metadata = {
-  title: "Our Work",
-  description: "Project showcase: corporate gifting, events and promotional merchandise by Cloud Trek.",
-  alternates: { canonical: "/our-work" },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { m } = await getI18n();
+  return { title: m.meta.work.title, description: m.meta.work.description, alternates: { canonical: "/our-work" } };
+}
 
 export default async function WorkPage() {
+  const { m } = await getI18n();
   const { projects } = await getProjects();
   return (
     <>
       <PageHero
-        eyebrow="Our work"
-        title="Ideas, made tangible."
-        intro="A selection of project work, from welcome kits to conference merchandise and recognition awards."
+        eyebrow={m.work.eyebrow}
+        title={m.work.title}
+        intro={m.work.intro}
       >
-        <p className="max-w-xl text-sm text-charcoal/70">Every project starts with a brief: audience, quantity, timeline and brand. We handle the rest, from sourcing to delivery.</p>
+        <p className="max-w-xl text-sm text-charcoal/70">{m.work.line}</p>
       </PageHero>
 
       <div className="container-x space-y-20 py-16 lg:space-y-28 lg:py-24">
@@ -29,11 +30,11 @@ export default async function WorkPage() {
             <article id={p.slug} className="grid scroll-mt-28 gap-8 lg:grid-cols-12 lg:gap-12">
               <div className={`grid grid-cols-5 gap-3 lg:col-span-8 ${i % 2 ? "lg:order-2" : ""}`}>
                 <div className={`img-zoom img-fade img-fade-soft relative aspect-[4/3] overflow-hidden bg-offwhite ${p.images[1] ? "col-span-3" : "col-span-5"}`}>
-                  <Image src={p.images[0]} alt={`${p.title}, main image`} fill sizes="(min-width:1024px) 40vw, 90vw" className="object-cover" />
+                  <Image src={p.images[0]} alt={`${p.title}, ${m.work.main}`} fill sizes="(min-width:1024px) 40vw, 90vw" className="object-cover" />
                 </div>
                 {p.images[1] && (
                   <div className="img-zoom img-fade relative col-span-2 aspect-square self-end overflow-hidden bg-offwhite">
-                    <Image src={p.images[1]} alt={`${p.title}, detail`} fill sizes="(min-width:1024px) 25vw, 40vw" className="object-cover" />
+                    <Image src={p.images[1]} alt={`${p.title}, ${m.work.detail}`} fill sizes="(min-width:1024px) 25vw, 40vw" className="object-cover" />
                   </div>
                 )}
               </div>

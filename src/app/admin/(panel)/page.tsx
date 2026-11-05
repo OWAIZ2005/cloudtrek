@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Boxes, ClipboardList, Clock, Inbox } from "lucide-react";
+import { Boxes, Clock, Inbox, Mail, MailWarning } from "lucide-react";
 import { requireAdmin } from "@/lib/admin/auth";
 import { adminOverview } from "@/lib/admin/data";
 import { DemoBadge, fmtDate, Panel, PageTitle, StatusBadge } from "@/components/admin/ui";
@@ -15,14 +15,15 @@ export default async function OverviewPage() {
     { label: "Total products", value: o.totalProducts, icon: Boxes },
     { label: "Total enquiries", value: o.totalEnquiries, icon: Inbox },
     { label: "Pending enquiries", value: o.pendingEnquiries, icon: Clock, accent: true },
-    { label: "Quotations sent", value: o.statusDistribution.find((s) => s.status === "quotation_sent")?.count ?? 0, icon: ClipboardList },
+    { label: "New messages", value: o.newMessages, icon: Mail },
+    { label: "Email failures", value: o.emailFailures, icon: MailWarning, accent: o.emailFailures > 0 },
   ];
 
   return (
     <>
       <PageTitle title="Overview" sub={o.isDemo ? "Illustrative sample data." : "Live data from your Supabase project."} />
 
-      <div className="grid gap-px bg-line sm:grid-cols-2 xl:grid-cols-4">
+      <div className="grid gap-px bg-line sm:grid-cols-2 xl:grid-cols-5">
         {cards.map((c) => (
           <div key={c.label} className="bg-white p-5">
             <div className="flex items-center justify-between text-muted-foreground">

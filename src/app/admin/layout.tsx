@@ -6,5 +6,6 @@ export const metadata: Metadata = {
 };
 
 export default function AdminRootLayout({ children }: { children: React.ReactNode }) {
-  return <div className="min-h-screen flex-1 bg-offwhite">{children}</div>;
+  /* The admin interface is English-only: keep it left-to-right even if a visitor chose Arabic. */
+  return <div dir="ltr" lang="en" className="min-h-screen flex-1 bg-offwhite">{children}</div>;
 }

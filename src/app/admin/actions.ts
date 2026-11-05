@@ -7,6 +7,8 @@ import { z } from "zod";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { requireAdminForWrite } from "@/lib/admin/auth";
 import { createSessionClient } from "@/lib/supabase/server";
+import { notifyContact, notifyEnquiry } from "@/lib/email/notify";
+import { emailConfig } from "@/lib/email/config";
 import { ENQUIRY_STATUSES, type Spec } from "@/types";
 
 export type ActionState = { ok?: boolean; error?: string; message?: string } | undefined;
@@ -38,6 +40,21 @@ async function uploadImages(db: SupabaseClient, folder: string, files: File[]): 
     urls.push(db.storage.from("catalogue").getPublicUrl(path).data.publicUrl);
   }
   return urls;
+}
+
+/** Arabic content typed in the admin forms (fields named ar_*) -> `translations` jsonb. Empty fields are omitted. */
+function arTranslations(form: FormData, text: string[], lists: { key: string; kind: "specs" | "lines" }[] = []) {
+  const ar: Record<string, unknown> = {};
+  for (const k of text) {
+    const v = String(form.get(`ar_${k}`) ?? "").trim();
+    if (v) ar[k] = v;
+  }
+  for (const { key, kind } of lists) {
+    const raw = form.get(`ar_${key}`);
+    const v = kind === "specs" ? parseSpecs(raw) : lines(raw);
+    if (v.length) ar[key] = v;
+  }
+  return Object.keys(ar).length ? { ar } : {};
 }
 
 const fail = (e: unknown): ActionState => ({ ok: false, error: e instanceof Error ? e.message : "Something went wrong." });
@@ -94,6 +111,7 @@ export async function saveProduct(_: ActionState, form: FormData): Promise<Actio
       moq: moqRaw ? Math.max(1, parseInt(moqRaw, 10) || 1) : null,
       is_featured: form.get("isFeatured") === "on",
       is_active: form.get("isActive") === "on",
+      translations: arTranslations(form, ["name", "shortDescription", "description"], [{ key: "specifications", kind: "specs" }, { key: "customizationOptions", kind: "lines" }]),
     };
     const q = id ? db.from("products").update(row).eq("id", id) : db.from("products").insert(row);
     const { error } = await q;
@@ -136,6 +154,7 @@ export async function saveCategory(_: ActionState, form: FormData): Promise<Acti
       description: String(form.get("description") ?? "").trim() || null,
       image: uploaded ?? (keep || null),
       is_active: form.get("isActive") === "on",
+      translations: arTranslations(form, ["name", "description"]),
     };
     const { error } = await (id ? db.from("categories").update(row).eq("id", id) : db.from("categories").insert(row));
     if (error) return { ok: false, error: error.code === "23505" ? "That slug is already in use." : error.message };
@@ -186,6 +205,7 @@ export async function saveProject(_: ActionState, form: FormData): Promise<Actio
       images: [...keep, ...added],
       details: parseSpecs(form.get("details")),
       is_featured: form.get("isFeatured") === "on",
+      translations: arTranslations(form, ["title", "category", "description"], [{ key: "details", kind: "specs" }]),
     };
     const { error } = await (id ? db.from("portfolio_projects").update(row).eq("id", id) : db.from("portfolio_projects").insert(row));
     if (error) return { ok: false, error: error.code === "23505" ? "That slug is already in use." : error.message };
@@ -201,4 +221,67 @@ export async function deleteProject(form: FormData) {
   await db.from("portfolio_projects").delete().eq("id", String(form.get("id")));
   revalidatePath("/", "layout");
   redirect("/admin/portfolio?deleted=1");
+}
+
+/* ------------------------------ Email retry & messages ------------------------------ */
+
+/** Re-sends the team notification for a saved enquiry (never creates or alters the enquiry itself). */
+export async function retryEnquiryEmail(form: FormData) {
+  const { db } = await requireAdminForWrite();
+  const id = String(form.get("id"));
+  const { data: e } = await db.from("enquiries").select("*, enquiry_items(*)").eq("id", id).maybeSingle();
+  if (!e) redirect("/admin/enquiries");
+  let attachmentUrl: string | null = null;
+  if (e.logo_path) {
+    const { data: s } = await db.storage.from("enquiry-uploads").createSignedUrl(e.logo_path, 60 * 60 * 24 * 7);
+    attachmentUrl = s?.signedUrl ?? null;
+  }
+  const mail = await notifyEnquiry({
+    reference: e.enquiry_number,
+    createdAt: new Date(e.created_at),
+    customerName: e.customer_name,
+    companyName: e.company_name,
+    email: e.email,
+    phone: e.phone,
+    items: (e.enquiry_items ?? []).map((i: { product_name: string; quantity: number; customization_notes: string | null }) => ({ productName: i.product_name, quantity: i.quantity, customizationNotes: i.customization_notes ?? "" })),
+    customizationRequirements: e.customization_requirements ?? "",
+    budgetRange: e.budget_range ?? "",
+    deliveryDate: e.delivery_date ?? "",
+    notes: e.notes ?? "",
+    attachmentUrl,
+    adminUrl: `${emailConfig().siteUrl}/admin/enquiries/${id}`,
+  });
+  await db.from("enquiries").update({ email_status: mail.status, email_error: mail.error, email_sent_at: mail.status === "sent" ? new Date().toISOString() : null, email_attempts: (e.email_attempts ?? 0) + 1 }).eq("id", id);
+  revalidatePath("/admin", "layout");
+  redirect(`/admin/enquiries/${id}?retried=${mail.status}`);
+}
+
+export async function retryContactEmail(form: FormData) {
+  const { db } = await requireAdminForWrite();
+  const id = String(form.get("id"));
+  const { data: r } = await db.from("contact_messages").select("*").eq("id", id).maybeSingle();
+  if (!r) redirect("/admin/messages");
+  const mail = await notifyContact({
+    reference: r.reference_number,
+    createdAt: new Date(r.created_at),
+    customerName: r.customer_name,
+    email: r.email,
+    phone: r.phone ?? undefined,
+    companyName: r.company_name ?? undefined,
+    subject: r.subject ?? undefined,
+    message: r.message,
+    adminUrl: `${emailConfig().siteUrl}/admin/messages/${id}`,
+  });
+  await db.from("contact_messages").update({ email_status: mail.status, email_error: mail.error, email_sent_at: mail.status === "sent" ? new Date().toISOString() : null, email_attempts: (r.email_attempts ?? 0) + 1 }).eq("id", id);
+  revalidatePath("/admin", "layout");
+  redirect(`/admin/messages/${id}?retried=${mail.status}`);
+}
+
+export async function setMessageStatus(form: FormData) {
+  const { db } = await requireAdminForWrite();
+  const id = String(form.get("id"));
+  const status = String(form.get("status")) === "handled" ? "handled" : "new";
+  await db.from("contact_messages").update({ status }).eq("id", id);
+  revalidatePath("/admin", "layout");
+  redirect(`/admin/messages/${id}?updated=1`);
 }

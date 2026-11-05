@@ -8,35 +8,38 @@ import { SectionHeading } from "@/components/shared/section-heading";
 import { FinalCta } from "@/components/home/final-cta";
 import { bahrainOccasions, giftingOccasions } from "@/config/content";
 import { getCollections, getProductsBySlugs } from "@/lib/data";
+import { getI18n } from "@/i18n/get-locale";
+import { localizeAll } from "@/i18n/localize";
 
-export const metadata: Metadata = {
-  title: "Corporate Gifting",
-  description:
-    "Employee welcome kits, executive gifts, client appreciation, festive and event gifting, customized and branded for your organisation in Bahrain.",
-  alternates: { canonical: "/corporate-gifting" },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { m } = await getI18n();
+  return { title: m.meta.gifting.title, description: m.meta.gifting.description, alternates: { canonical: "/corporate-gifting" } };
+}
 
 export default async function GiftingPage() {
+  const { m, locale } = await getI18n();
   const collections = await getCollections();
+  const occasions = localizeAll(giftingOccasions, locale);
+  const moments = localizeAll(bahrainOccasions, locale);
   const suggested = await Promise.all(collections.map((c) => getProductsBySlugs(c.suggestedProductSlugs)));
 
   return (
     <>
       <PageHero
-        eyebrow="Corporate gifting"
-        title="Gifts worth opening."
-        intro="From employee onboarding to executive appreciation, we help you select, brand and present gifts that reflect well on your organisation."
+        eyebrow={m.gifting.eyebrow}
+        title={m.gifting.title}
+        intro={m.gifting.intro}
         image="/images/hero/gift-exchange.jpg"
-        imageAlt="Two hands exchanging a wrapped gift box"
+        imageAlt={m.gifting.altHero}
       >
-        <CtaLink href="/quote" variant="red">Start a Gifting Enquiry</CtaLink>
+        <CtaLink href="/quote" variant="red">{m.gifting.cta}</CtaLink>
       </PageHero>
 
       <section className="container-x py-20 lg:py-28" aria-labelledby="occ-title">
-        <SectionHeading eyebrow="Gifting for every audience" id="occ-title" title="Six ways to say thank you." />
+        <SectionHeading eyebrow={m.gifting.occEyebrow} id="occ-title" title={m.gifting.occTitle} />
         <div className="mt-12 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6">
-          {giftingOccasions.map((g, i) => (
-            <Reveal key={g.title} delay={(i % 6) * 0.05} distance={20}>
+          {occasions.map((g, i) => (
+            <Reveal key={g.image} delay={(i % 6) * 0.05} distance={20}>
               <div className="group">
                 <div className="img-zoom img-fade relative aspect-[4/5] overflow-hidden bg-offwhite">
                   <Image src={g.image} alt={g.title} fill sizes="(min-width:1024px) 16vw, 33vw" className="object-cover" />
@@ -53,9 +56,9 @@ export default async function GiftingPage() {
         <div className="container-x">
           <div className="flex flex-col justify-between gap-5 md:flex-row md:items-end">
             <SectionHeading
-              eyebrow="Gifting collections"
-              id="col-title" title="Starting points for your brief."
-              intro="Contents are configured around your brand, audience and budget."
+              eyebrow={m.gifting.colEyebrow}
+              id="col-title" title={m.gifting.colTitle}
+              intro={m.gifting.colIntro}
             />
           </div>
 
@@ -67,14 +70,14 @@ export default async function GiftingPage() {
                     <Image src={c.image} alt={c.title} fill sizes="(min-width:1024px) 58vw, 100vw" className="object-cover" />
                   </div>
                   <div className="lg:col-span-5">
-                    <p className="eyebrow mb-3">Collection 0{i + 1}</p>
+                    <p className="eyebrow mb-3">{m.gifting.collection} 0{i + 1}</p>
                     <h3 className="text-3xl font-semibold leading-tight sm:text-4xl">{c.title}</h3>
                     <p className="mt-2 font-display text-lg italic text-navy/70">{c.tagline}</p>
                     <p className="mt-5 text-base leading-relaxed text-charcoal/80">{c.description}</p>
-                    <p className="mt-5 text-sm text-charcoal/80"><strong className="font-semibold text-navy">Suited to:</strong> {c.audience}</p>
+                    <p className="mt-5 text-sm text-charcoal/80"><strong className="font-semibold text-navy">{m.gifting.suited}</strong> {c.audience}</p>
 
                     <div className="mt-6 border-t border-line pt-5">
-                      <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Suggested products</p>
+                      <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">{m.gifting.suggested}</p>
                       <ul className="flex flex-wrap gap-3">
                         {suggested[i].map((p) => (
                           <li key={p.id}>
@@ -86,7 +89,7 @@ export default async function GiftingPage() {
                         ))}
                       </ul>
                     </div>
-                    <div className="mt-7"><CtaLink href={`/quote?collection=${c.slug}`} variant="navy">Enquire about this collection</CtaLink></div>
+                    <div className="mt-7"><CtaLink href={`/quote?collection=${c.slug}`} variant="navy">{m.gifting.enquire}</CtaLink></div>
                   </div>
                 </article>
               </Reveal>
@@ -98,14 +101,14 @@ export default async function GiftingPage() {
       <section className="container-x py-20 lg:py-24">
         <div className="grid gap-8 border-y border-line py-12 md:grid-cols-12 md:items-center">
           <div className="md:col-span-5">
-            <p className="eyebrow mb-3">Local moments</p>
-            <h2 className="text-3xl font-semibold leading-tight">Gifting around Bahrain&rsquo;s calendar.</h2>
+            <p className="eyebrow mb-3">{m.gifting.momentsEyebrow}</p>
+            <h2 className="text-3xl font-semibold leading-tight">{m.gifting.momentsTitle}</h2>
           </div>
           <div className="md:col-span-7">
             <ul className="flex flex-wrap gap-3">
-              {bahrainOccasions.map((o) => (<li key={o} className="border border-navy/25 px-5 py-2.5 text-base text-navy">{o}</li>))}
+              {moments.map((o) => (<li key={o.key} className="border border-navy/25 px-5 py-2.5 text-base text-navy">{o.label}</li>))}
             </ul>
-            <p className="mt-4 text-sm text-muted-foreground">Whether it is Ramadan, Eid or Bahrain National Day, we plan gifting around your calendar, your audience and your brand.</p>
+            <p className="mt-4 text-sm text-muted-foreground">{m.gifting.momentsText}</p>
           </div>
         </div>
       </section>

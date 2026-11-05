@@ -6,6 +6,7 @@ import { LayoutGroup, motion } from "motion/react";
 import { Search, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { SORT_OPTIONS, type SortValue } from "@/lib/catalogue";
+import { useI18n } from "@/i18n/provider";
 import type { Category } from "@/types";
 
 export function ProductFilters({
@@ -23,6 +24,7 @@ export function ProductFilters({
   category: string;
   sort: SortValue;
 }) {
+  const { m } = useI18n();
   const router = useRouter();
   const pathname = usePathname();
   const [value, setValue] = useState(q);
@@ -51,7 +53,7 @@ export function ProductFilters({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value]);
 
-  const chips = [{ id: "", name: "All", count: total }, ...categories.map((c) => ({ id: c.slug, name: c.name, count: counts[c.slug] ?? 0 }))];
+  const chips = [{ id: "", name: m.products.all, count: total }, ...categories.map((c) => ({ id: c.slug, name: c.name, count: counts[c.slug] ?? 0 }))];
 
   return (
     <div className="sticky top-[76px] z-30 -mx-5 border-b border-line bg-white/90 px-5 py-4 backdrop-blur-md sm:mx-0 sm:px-0 lg:top-[84px]">
@@ -64,38 +66,38 @@ export function ProductFilters({
           }}
           className="relative w-full lg:max-w-md"
         >
-          <label htmlFor="product-search" className="sr-only">Search products</label>
+          <label htmlFor="product-search" className="sr-only">{m.a11y.searchProducts}</label>
           <Search className="pointer-events-none absolute start-4 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" aria-hidden />
           <input
             id="product-search"
             type="search"
             value={value}
             onChange={(e) => setValue(e.target.value)}
-            placeholder="Search products, e.g. notebook, bottle, award"
+            placeholder={m.products.searchPlaceholder}
             className="h-11 w-full border border-input bg-white ps-11 pe-11 text-sm outline-none transition-colors placeholder:text-muted-foreground focus:border-navy"
           />
           {value && (
-            <button type="button" aria-label="Clear search" onClick={() => setValue("")} className="absolute end-3 top-1/2 -translate-y-1/2 p-1 text-muted-foreground hover:text-navy">
+            <button type="button" aria-label={m.a11y.clearSearch} onClick={() => setValue("")} className="absolute end-3 top-1/2 -translate-y-1/2 p-1 text-muted-foreground hover:text-navy">
               <X className="size-4" />
             </button>
           )}
         </form>
 
         <div className="flex items-center gap-2 text-sm">
-          <label htmlFor="sort" className="text-muted-foreground">Sort</label>
+          <label htmlFor="sort" className="text-muted-foreground">{m.products.sort}</label>
           <select
             id="sort"
             value={sort}
             onChange={(e) => push({ sort: e.target.value })}
             className="h-11 border border-input bg-white px-3 text-sm text-navy outline-none focus:border-navy"
           >
-            {SORT_OPTIONS.map((o) => (<option key={o.value} value={o.value}>{o.label}</option>))}
+            {SORT_OPTIONS.map((o) => (<option key={o.value} value={o.value}>{m.products.sortOptions[o.value]}</option>))}
           </select>
         </div>
       </div>
 
       <LayoutGroup id="cat-chips">
-        <div className="-mx-5 mt-4 flex gap-2 overflow-x-auto px-5 pb-1 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0" role="group" aria-label="Filter by category">
+        <div className="-mx-5 mt-4 flex gap-2 overflow-x-auto px-5 pb-1 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0" role="group" aria-label={m.a11y.filterCategory}>
           {chips.map((c) => {
             const active = category === c.id;
             return (

@@ -1,6 +1,9 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { useI18n } from "@/i18n/provider";
 
 /**
  * Single source for the official Cloud Trek logo. Assets in /public/images/brand are
@@ -8,6 +11,7 @@ import { cn } from "@/lib/utils";
  * Never recreate the logo in HTML or recolour it.
  */
 export const LOGO_ALT = "Cloud Trek — Corporate Events, Publicity and Advertising";
+export const LOGO_ALT_AR = "كلاودترك – تنظيم المعارض والدعاية والإعلان";
 
 const VARIANTS = {
   full: { src: "/images/brand/cloudtrek-logo-full.png", width: 1162, height: 766 },
@@ -33,10 +37,11 @@ export function CloudTrekLogo({
   sizes?: string;
 }) {
   const v = VARIANTS[variant];
+  const { locale } = useI18n();
   const img = (
     <Image
       src={v.src}
-      alt={LOGO_ALT}
+      alt={locale === "ar" ? LOGO_ALT_AR : LOGO_ALT}
       width={v.width}
       height={v.height}
       priority={priority}
@@ -46,7 +51,7 @@ export function CloudTrekLogo({
     />
   );
   return href ? (
-    <Link href={href} aria-label="Cloud Trek home" className="inline-flex items-center">
+    <Link href={href} aria-label={locale === "ar" ? "كلاودترك – الصفحة الرئيسية" : "Cloud Trek home"} className="inline-flex items-center">
       {img}
     </Link>
   ) : (

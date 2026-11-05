@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Check, Plus } from "lucide-react";
 import { useQuote } from "./quote-provider";
 import { cn } from "@/lib/utils";
+import { useI18n } from "@/i18n/provider";
 import type { Product } from "@/types";
 
 export function AddToQuoteButton({
@@ -18,6 +19,7 @@ export function AddToQuoteButton({
   className?: string;
 }) {
   const { add, has } = useQuote();
+  const { m } = useI18n();
   const added = has(product.id);
   const base =
     cn(
@@ -28,7 +30,7 @@ export function AddToQuoteButton({
   if (added) {
     return (
       <Link href="/quote" className={cn(base, "border border-brand-red text-brand-red hover:bg-brand-red hover:text-white", className)}>
-        <Check className="size-4" aria-hidden /> {size === "sm" ? "Added" : "In enquiry list · View"}
+        <Check className="size-4" aria-hidden /> {size === "sm" ? m.products.added : m.products.inList}
       </Link>
     );
   }
@@ -42,7 +44,7 @@ export function AddToQuoteButton({
         className,
       )}
     >
-      <Plus className="size-4" aria-hidden /> {size === "sm" ? "Add" : "Add to enquiry"}
+      <Plus className="size-4" aria-hidden /> {size === "sm" ? m.products.add : m.products.addToEnquiry}
     </button>
   );
 }

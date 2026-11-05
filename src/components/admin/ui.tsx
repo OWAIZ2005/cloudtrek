@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { TriangleAlert } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { ENQUIRY_STATUS_LABELS, type EnquiryStatus } from "@/types";
+import { ENQUIRY_STATUS_LABELS, type EmailStatus, type EnquiryStatus } from "@/types";
 
 const statusStyle: Record<EnquiryStatus, string> = {
   new: "bg-brand-red text-white",
@@ -74,4 +74,15 @@ export function AdminLink({ href, children, className }: { href: string; childre
 
 export function fmtDate(iso: string) {
   return new Date(iso).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric", timeZone: "UTC" });
+}
+
+const emailStyle: Record<EmailStatus, string> = {
+  sent: "border border-navy/30 bg-white text-navy",
+  pending: "bg-mist text-navy",
+  failed: "bg-brand-red text-white",
+};
+const emailLabel: Record<EmailStatus, string> = { sent: "Email sent", pending: "Email pending", failed: "Email failed" };
+
+export function EmailBadge({ status }: { status: EmailStatus }) {
+  return <span className={cn("inline-flex items-center px-2 py-0.5 text-[10px] font-semibold tracking-wide", emailStyle[status])}>{emailLabel[status]}</span>;
 }

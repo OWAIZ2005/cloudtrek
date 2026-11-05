@@ -8,8 +8,10 @@
  *
  * Photography: Unsplash (free licence), stored locally under /public/images.
  */
+import { categoriesAr, collectionsAr, productsAr, projectsAr, statsAr } from "./demo-data.ar";
 import type {
   Category,
+  ContactMessage,
   Enquiry,
   GiftingCollection,
   PortfolioProject,
@@ -21,7 +23,7 @@ const img = (group: string, file: string) => `/images/${group}/${file}.jpg`;
 
 /* ----------------------------- Categories ----------------------------- */
 
-export const demoCategories: Category[] = [
+const baseCategories: Category[] = [
   { id: "cat-stationery", name: "Corporate Stationery", slug: "corporate-stationery", description: "Notebooks, pens and desk essentials that carry your brand into every meeting.", image: img("products", "leather-notebook"), isActive: true, isDemo: true },
   { id: "cat-tech", name: "Tech & Electronics", slug: "tech-electronics", description: "Chargers, audio and storage gifts that earn a permanent place on the desk.", image: img("products", "wireless-charging-station"), isActive: true, isDemo: true },
   { id: "cat-drinkware", name: "Drinkware", slug: "drinkware", description: "Insulated bottles and travel mugs for everyday brand visibility.", image: img("products", "vacuum-bottle"), isActive: true, isDemo: true },
@@ -40,7 +42,7 @@ const p = (x: P): Product => {
   return { ...rest, images: [image], isActive: true, isDemo: true };
 };
 
-export const demoProducts: Product[] = [
+const baseProducts: Product[] = [
   p({ id: "prod-01", name: "Premium Executive Gift Box", slug: "premium-executive-gift-box", categorySlug: "gift-sets-hampers", image: img("products", "executive-gift-box"), isFeatured: true, moq: 50,
     shortDescription: "A rigid, magnet-closure presentation box configured with a curated executive set.",
     description: "A rigid presentation box with a magnetic closure and a custom-cut insert, designed to hold a curated selection of executive items. Ideal for senior client gifting and board-level appreciation. Contents can be configured around your brief.",
@@ -140,7 +142,7 @@ export const demoProducts: Product[] = [
 
 /* -------------------------- Gifting collections -------------------------- */
 
-export const demoCollections: GiftingCollection[] = [
+const baseCollections: GiftingCollection[] = [
   { id: "col-1", title: "Executive Essentials", slug: "executive-essentials", tagline: "Quiet, considered, senior.", description: "A restrained selection of premium stationery, leather goods and desk pieces for senior stakeholders and board-level appreciation.", audience: "Executives, board members, key accounts", image: img("products", "metal-pen"), suggestedProductSlugs: ["premium-executive-gift-box", "custom-leather-notebook", "branded-metal-pen", "premium-business-card-holder"], isDemo: true },
   { id: "col-2", title: "Employee Welcome Collection", slug: "employee-welcome", tagline: "A first day worth remembering.", description: "Onboarding kits that combine apparel, drinkware and stationery so a new hire starts with a sense of belonging.", audience: "HR teams, new joiners", image: img("products", "welcome-kit"), suggestedProductSlugs: ["employee-welcome-kit", "corporate-hoodie", "stainless-steel-vacuum-bottle", "premium-corporate-backpack"], isDemo: true },
   { id: "col-3", title: "Client Appreciation Collection", slug: "client-appreciation", tagline: "Thank you, made tangible.", description: "Thoughtful presentation sets and technology gifts that mark renewals, milestones and long-standing partnerships.", audience: "Account managers, sales leaders", image: img("gifting", "client-appreciation-wide"), suggestedProductSlugs: ["wireless-charging-station", "luxury-gift-hamper", "wireless-bluetooth-earbuds", "branded-power-bank"], isDemo: true },
@@ -151,7 +153,7 @@ export const demoCollections: GiftingCollection[] = [
 
 /* ----------------------------- Portfolio ----------------------------- */
 
-export const demoProjects: PortfolioProject[] = [
+const baseProjects: PortfolioProject[] = [
   { id: "proj-1", title: "Corporate Employee Welcome Kits", slug: "employee-welcome-kits", category: "Corporate Gifting", isFeatured: true, isDemo: true, images: [img("products", "welcome-kit"), img("products", "corporate-hoodie")],
     description: "Onboarding kits: boxed sets that bring apparel, drinkware and stationery together with a personal welcome insert.",
     details: [{ label: "Scope", value: "Concept, sourcing, branding, packing" }, { label: "Techniques", value: "Embroidery, screen print" }] },
@@ -175,7 +177,7 @@ export const demoProjects: PortfolioProject[] = [
 /* ----------------------------- Statistics ----------------------------- */
 
 /** ILLUSTRATIVE values — not verified company figures. */
-export const demoStats: Stat[] = [
+const baseStats: Stat[] = [
   { value: 250, suffix: "+", label: "Promotional product options" },
   { value: 30, suffix: "+", label: "Gift categories" },
   { value: 100, suffix: "+", label: "Customization possibilities" },
@@ -184,12 +186,12 @@ export const demoStats: Stat[] = [
 
 /* ----------------------------- Enquiries ----------------------------- */
 
-type E = Omit<Enquiry, "isDemo" | "id">;
-const mk = (n: number, e: E): Enquiry => ({ ...e, id: `demo-enq-${n}`, isDemo: true });
+type E = Omit<Enquiry, "isDemo" | "id" | "emailStatus" | "emailError" | "emailAttempts">;
+const mk = (n: number, e: E & Partial<Pick<Enquiry, "emailStatus" | "emailError">>): Enquiry => ({ emailStatus: "sent", emailAttempts: 1, ...e, id: `demo-enq-${n}`, isDemo: true });
 
 export const demoEnquiries: Enquiry[] = [
   mk(1, { enquiryNumber: "DEMO-0001", customerName: "Sample Contact A", companyName: "Sample Company A", email: "a@example.com", phone: "+973 0000 0001", status: "new", createdAt: "2026-11-02T08:30:00Z", budgetRange: "BHD 1,000 – 2,500", deliveryDate: "2026-12-15", customizationRequirements: "Laser-engraved logo on bottle body.", notes: "Illustrative record.", items: [{ productId: "prod-03", productName: "Stainless Steel Vacuum Bottle", quantity: 300 }, { productId: "prod-04", productName: "Custom Leather Notebook", quantity: 300 }] }),
-  mk(2, { enquiryNumber: "DEMO-0002", customerName: "Sample Contact B", companyName: "Sample Company B", email: "b@example.com", phone: "+973 0000 0002", status: "new", createdAt: "2026-11-01T11:10:00Z", budgetRange: "BHD 2,500 – 5,000", customizationRequirements: "Hot-foil logo on box lid, personalised cards.", items: [{ productId: "prod-01", productName: "Premium Executive Gift Box", quantity: 120 }] }),
+  mk(2, { emailStatus: "failed", emailError: "resend_403: domain not verified (demo)", enquiryNumber: "DEMO-0002", customerName: "Sample Contact B", companyName: "Sample Company B", email: "b@example.com", phone: "+973 0000 0002", status: "new", createdAt: "2026-11-01T11:10:00Z", budgetRange: "BHD 2,500 – 5,000", customizationRequirements: "Hot-foil logo on box lid, personalised cards.", items: [{ productId: "prod-01", productName: "Premium Executive Gift Box", quantity: 120 }] }),
   mk(3, { enquiryNumber: "DEMO-0003", customerName: "Sample Contact C", companyName: "Sample Company C", email: "c@example.com", phone: "+973 0000 0003", status: "contacted", createdAt: "2026-10-29T09:00:00Z", customizationRequirements: "Embroidery on left chest.", items: [{ productId: "prod-10", productName: "Corporate Hoodie", quantity: 80 }, { productId: "prod-06", productName: "Premium Corporate Backpack", quantity: 80 }] }),
   mk(4, { enquiryNumber: "DEMO-0004", customerName: "Sample Contact D", companyName: "Sample Company D", email: "d@example.com", phone: "+973 0000 0004", status: "quotation_sent", createdAt: "2026-10-24T13:45:00Z", budgetRange: "BHD 5,000+", items: [{ productId: "prod-14", productName: "Corporate Conference Kit", quantity: 500 }, { productId: "prod-11", productName: "Branded Canvas Tote Bag", quantity: 500 }] }),
   mk(5, { enquiryNumber: "DEMO-0005", customerName: "Sample Contact E", companyName: "Sample Company E", email: "e@example.com", phone: "+973 0000 0005", status: "approved", createdAt: "2026-10-18T07:20:00Z", items: [{ productId: "prod-16", productName: "Engraved Crystal Award", quantity: 25 }] }),
@@ -197,7 +199,7 @@ export const demoEnquiries: Enquiry[] = [
   mk(7, { enquiryNumber: "DEMO-0007", customerName: "Sample Contact G", companyName: "Sample Company G", email: "g@example.com", phone: "+973 0000 0007", status: "completed", createdAt: "2026-09-12T12:00:00Z", items: [{ productId: "prod-15", productName: "Luxury Gift Hamper", quantity: 150 }] }),
   mk(8, { enquiryNumber: "DEMO-0008", customerName: "Sample Contact H", companyName: "Sample Company H", email: "h@example.com", phone: "+973 0000 0008", status: "cancelled", createdAt: "2026-09-04T15:30:00Z", items: [{ productId: "prod-13", productName: "Custom USB Drive", quantity: 200 }] }),
   mk(9, { enquiryNumber: "DEMO-0009", customerName: "Sample Contact I", companyName: "Sample Company I", email: "i@example.com", phone: "+973 0000 0009", status: "contacted", createdAt: "2026-10-27T08:10:00Z", items: [{ productId: "prod-02", productName: "Wireless Charging Station", quantity: 150 }, { productId: "prod-17", productName: "Branded Power Bank", quantity: 150 }] }),
-  mk(10, { enquiryNumber: "DEMO-0010", customerName: "Sample Contact J", companyName: "Sample Company J", email: "j@example.com", phone: "+973 0000 0010", status: "new", createdAt: "2026-11-03T06:55:00Z", items: [{ productId: "prod-08", productName: "Customized Travel Mug", quantity: 400 }] }),
+  mk(10, { emailStatus: "pending", enquiryNumber: "DEMO-0010", customerName: "Sample Contact J", companyName: "Sample Company J", email: "j@example.com", phone: "+973 0000 0010", status: "new", createdAt: "2026-11-03T06:55:00Z", items: [{ productId: "prod-08", productName: "Customized Travel Mug", quantity: 400 }] }),
 ];
 
 /* --------------------------- Dashboard charts --------------------------- */
@@ -213,3 +215,16 @@ export const demoMonthlyEnquiries = [
 ];
 
 export const DEMO_LABEL = "Illustrative sample content";
+
+/* Arabic translations are attached to the same records (see demo-data.ar.ts). */
+export const demoCategories: Category[] = baseCategories.map((c) => ({ ...c, ar: categoriesAr[c.id] }));
+export const demoProducts: Product[] = baseProducts.map((p) => ({ ...p, ar: productsAr[p.id] }));
+export const demoCollections: GiftingCollection[] = baseCollections.map((c) => ({ ...c, ar: collectionsAr[c.id] }));
+export const demoProjects: PortfolioProject[] = baseProjects.map((p) => ({ ...p, ar: projectsAr[p.id] }));
+export const demoStats: Stat[] = baseStats.map((st, i) => ({ ...st, ar: { label: statsAr[i] } }));
+
+export const demoMessages: ContactMessage[] = [
+  { id: "demo-msg-1", referenceNumber: "DEMO-CM-0001", customerName: "Sample Contact K", email: "k@example.com", phone: "+973 0000 0011", companyName: "Sample Company K", subject: "Corporate gifting for Ramadan", message: "Illustrative message: we would like to discuss a gifting programme for our team.", status: "new", emailStatus: "sent", emailAttempts: 1, createdAt: "2026-11-03T09:10:00Z", isDemo: true },
+  { id: "demo-msg-2", referenceNumber: "DEMO-CM-0002", customerName: "Sample Contact L", email: "l@example.com", companyName: null, phone: null, subject: "Exhibition merchandise", message: "Illustrative message: please share options for event merchandise.", status: "handled", emailStatus: "sent", emailAttempts: 1, createdAt: "2026-10-30T14:20:00Z", isDemo: true },
+  { id: "demo-msg-3", referenceNumber: "DEMO-CM-0003", customerName: "Sample Contact M", email: "m@example.com", phone: "+973 0000 0013", companyName: "Sample Company M", subject: null, message: "Illustrative message: notification email failed for this record (demo).", status: "new", emailStatus: "failed", emailError: "resend_403: domain not verified (demo)", emailAttempts: 1, createdAt: "2026-10-28T08:00:00Z", isDemo: true },
+];

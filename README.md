@@ -59,7 +59,7 @@ Installed and used, each inspected and customised to the brand (source in `src/c
 ## Supabase setup
 
 1. Create a project at supabase.com.
-2. SQL editor → run `supabase/migrations/0001_init.sql` (tables, indexes, RLS, storage buckets `catalogue` and `enquiry-uploads`).
+2. SQL editor → run, in order, `supabase/migrations/0001_init.sql` (tables, indexes, RLS, storage buckets `catalogue` and `enquiry-uploads`) and `supabase/migrations/0002_email_contact_translations.sql` (email delivery tracking, `contact_messages`, Arabic `translations` columns).
 3. *(Optional demo catalogue)* run `supabase/seed.sql` (rows flagged `is_demo = true`). Regenerate with `npm run seed:generate`. `supabase/demo-enquiries.sql` is a **separate, optional** file of clearly flagged `DEMO-` enquiries; never run it against a live customer database.
 4. Copy the project URL, anon key and service-role key into `.env.local` / Vercel. **The service-role key is server-only.**
 
@@ -82,7 +82,15 @@ Installed and used, each inspected and customised to the brand (source in `src/c
 
 ## Email (Resend)
 
-Set `RESEND_API_KEY`, `EMAIL_FROM` (a verified sender) and `ADMIN_NOTIFY_EMAIL`. On each enquiry the admin is emailed and the customer receives a confirmation (`src/lib/email/notify.ts`). Without these variables the enquiry is still saved; no email is sent.
+Every quote enquiry and every contact message is emailed to **`CLOUDTREK_ENQUIRY_EMAIL`** (default `aslam@cloudtrekbh.com`).
+
+Flow: validate on the server → save to Supabase → send the email → store the delivery status → respond. `email_status` is `pending`, `sent` or `failed`; **`sent` is stored only when Resend accepted the message**. If the email fails the submission is **kept** (never discarded), the visitor is told it was saved but the team notification is delayed, and an admin can press **Retry email** on the enquiry or message page. Without Supabase the form still tries to email the team but tells the visitor nothing was stored.
+
+Required variables (server-side only): `RESEND_API_KEY`, `CLOUDTREK_FROM_EMAIL`, `CLOUDTREK_ENQUIRY_EMAIL`. Optional: `CLOUDTREK_SEND_CUSTOMER_CONFIRMATION=true` sends the customer a bilingual receipt.
+
+**Sender domain:** Resend only delivers from a domain you have verified. In Resend → Domains, add `cloudtrekbh.com`, then add exactly the DNS records Resend shows (SPF/TXT, DKIM, and optional DMARC) at the domain's DNS host, wait for "Verified", and set `CLOUDTREK_FROM_EMAIL` to an address on that domain. Until then Resend rejects sends (recorded as `failed`, retryable).
+
+Safety: the API key never reaches the browser; all user input is HTML-escaped in templates; subject lines and reply-to values are stripped of line breaks (no header injection); a honeypot field and per-IP rate limiting guard both endpoints; uploads are type- and size-checked and stored in a private bucket.
 
 ## Editable content map
 
@@ -96,9 +104,15 @@ Set `RESEND_API_KEY`, `EMAIL_FROM` (a verified sender) and `ADMIN_NOTIFY_EMAIL`.
 
 Gifting collections and statistics are editorial content (no table in the MVP schema). Testimonials / client logos are intentionally **not** shown (`siteConfig.features`); the homepage uses a positioning section until verified material exists.
 
-## Languages
+## Languages (English / Arabic)
 
-English is the default. Arabic is wired for RTL (`<html dir>`, logical Tailwind utilities, Noto Sans Arabic) with Arabic **navigation/CTA labels only**; page copy needs verified translation before launch. Switch with the header language button (cookie `ct_locale`).
+One application, two languages. The choice is stored in the `ct_locale` cookie and applied on the server (`<html lang dir>`), so there is no flash of the wrong language or direction, and it persists across navigation and refresh.
+
+- **UI copy:** `src/i18n/messages.ts` holds English and Arabic side by side; the Arabic object is typed against the English one, so a missing translation fails the build.
+- **Content (products, categories, collections, projects, services, steps, values, statistics):** each record keeps its English fields plus an `ar` object (`src/data/demo-data.ar.ts`, `src/config/content.ts`). For database records, Arabic is stored in the `translations` JSON column and can be entered from the admin product, category and project forms. Missing Arabic falls back to English.
+- **RTL:** logical Tailwind utilities (`ps/pe/ms/me/start/end`), mirrored directional arrows, `:dir(rtl)` typography rules (no letter-spacing, taller line height), Noto Sans Arabic. Logos, photographs, phone numbers and e-mail addresses are not mirrored.
+- The **admin dashboard is English-only** by design (internal staff tool) and stays left-to-right.
+- The Arabic wording is written as natural business Arabic but should be reviewed by Cloud Trek before launch. The Arabic brand name matches the official logo spelling (كلاودترك).
 
 ## Deploy to Vercel
 

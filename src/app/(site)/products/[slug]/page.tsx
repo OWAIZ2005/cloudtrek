@@ -9,11 +9,13 @@ import { CtaLink } from "@/components/shared/cta";
 import { Reveal } from "@/components/shared/reveal";
 import { getCategories, getProductBySlug, getRelatedProducts } from "@/lib/data";
 import { siteConfig } from "@/config/site";
+import { getI18n } from "@/i18n/get-locale";
 
 export async function generateMetadata({ params }: PageProps<"/products/[slug]">): Promise<Metadata> {
   const { slug } = await params;
+  const { m } = await getI18n();
   const product = await getProductBySlug(slug);
-  if (!product) return { title: "Product not found" };
+  if (!product) return { title: m.products.notFound };
   return {
     title: product.name,
     description: product.shortDescription,
@@ -24,6 +26,7 @@ export async function generateMetadata({ params }: PageProps<"/products/[slug]">
 
 export default async function ProductPage({ params }: PageProps<"/products/[slug]">) {
   const { slug } = await params;
+  const { m } = await getI18n();
   const product = await getProductBySlug(slug);
   if (!product) notFound();
 
@@ -44,11 +47,11 @@ export default async function ProductPage({ params }: PageProps<"/products/[slug
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <div className="container-x pt-6">
-        <nav aria-label="Breadcrumb" className="text-xs text-muted-foreground">
+        <nav aria-label={m.a11y.breadcrumb} className="text-xs text-muted-foreground">
           <ol className="flex flex-wrap items-center gap-2">
-            <li><Link href="/" className="hover:text-navy">Home</Link></li>
+            <li><Link href="/" className="hover:text-navy">{m.products.crumbHome}</Link></li>
             <li aria-hidden>/</li>
-            <li><Link href="/products" className="hover:text-navy">Products</Link></li>
+            <li><Link href="/products" className="hover:text-navy">{m.nav.products}</Link></li>
             {category && (<><li aria-hidden>/</li><li><Link href={`/products?category=${category.slug}`} className="hover:text-navy">{category.name}</Link></li></>)}
           </ol>
         </nav>
@@ -60,30 +63,30 @@ export default async function ProductPage({ params }: PageProps<"/products/[slug
         <div className="lg:py-4">
           <p className="eyebrow mb-4">{category?.name}</p>
           <h1 className="text-[clamp(2rem,4vw,3.25rem)] font-semibold leading-[1.05] tracking-tight">{product.name}</h1>
-          <p className="mt-4 text-sm text-muted-foreground">Branded with your identity and prepared to your brief, from first sample to delivery in Bahrain.</p>
+          <p className="mt-4 text-sm text-muted-foreground">{m.products.detailLine}</p>
           <p className="mt-6 text-base leading-relaxed text-charcoal/80">{product.description}</p>
 
           <dl className="mt-8 grid grid-cols-2 gap-px border border-line bg-line text-sm">
             <div className="bg-white p-4">
-              <dt className="text-xs uppercase tracking-wider text-muted-foreground">Pricing</dt>
-              <dd className="mt-1 font-medium text-navy">Quotation-based</dd>
+              <dt className="text-xs uppercase tracking-wider text-muted-foreground">{m.products.pricing}</dt>
+              <dd className="mt-1 font-medium text-navy">{m.products.quotationBased}</dd>
             </div>
             <div className="bg-white p-4">
-              <dt className="text-xs uppercase tracking-wider text-muted-foreground">Minimum order</dt>
+              <dt className="text-xs uppercase tracking-wider text-muted-foreground">{m.products.minOrder}</dt>
               <dd className="mt-1 font-medium text-navy">
-                {product.moq ? `${product.moq} units` : "On request"}
+                {product.moq ? m.products.units(product.moq) : m.products.onRequest}
               </dd>
             </div>
           </dl>
 
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <CtaLink href={`/quote?product=${product.slug}`} variant="red" className="sm:flex-1">Request a Quote</CtaLink>
+            <CtaLink href={`/quote?product=${product.slug}`} variant="red" className="sm:flex-1">{m.products.requestQuote}</CtaLink>
             <AddToQuoteButton product={product} className="sm:flex-1" />
           </div>
 
           {product.customizationOptions.length > 0 && (
             <div className="mt-10 border-t border-line pt-8">
-              <h2 className="text-lg font-semibold">Customization options</h2>
+              <h2 className="text-lg font-semibold">{m.products.options}</h2>
               <ul className="mt-4 grid gap-x-6 gap-y-2.5 sm:grid-cols-2">
                 {product.customizationOptions.map((o) => (
                   <li key={o} className="flex items-start gap-2.5 text-sm text-charcoal/85">
@@ -96,7 +99,7 @@ export default async function ProductPage({ params }: PageProps<"/products/[slug
 
           {product.specifications.length > 0 && (
             <div className="mt-10 border-t border-line pt-8">
-              <h2 className="text-lg font-semibold">Specifications</h2>
+              <h2 className="text-lg font-semibold">{m.products.specs}</h2>
               <dl className="mt-4 divide-y divide-line text-sm">
                 {product.specifications.map((s) => (
                   <div key={s.label} className="grid grid-cols-3 gap-4 py-3">
@@ -112,7 +115,7 @@ export default async function ProductPage({ params }: PageProps<"/products/[slug
 
       <section className="bg-offwhite py-16 lg:py-24" aria-labelledby="related-title">
         <div className="container-x">
-          <h2 id="related-title" className="display-2 !text-[clamp(1.75rem,3vw,2.5rem)]">You may also like</h2>
+          <h2 id="related-title" className="display-2 !text-[clamp(1.75rem,3vw,2.5rem)]">{m.products.related}</h2>
           <div className="mt-10 grid grid-cols-1 gap-x-5 gap-y-12 min-[480px]:grid-cols-2 lg:grid-cols-4">
             {related.map((p) => (
               <ProductCard key={p.id} product={p} categoryName={categories.find((c) => c.slug === p.categorySlug)?.name} />

@@ -6,10 +6,13 @@ import FadeContent from "@/components/reactbits/FadeContent";
 import { navLinks, siteConfig, whatsappLink } from "@/config/site";
 import { divisions } from "@/config/content";
 import { getCategories } from "@/lib/data";
-import type { Dictionary } from "@/i18n/dictionaries";
+import { getI18n } from "@/i18n/get-locale";
+import { localizeAll } from "@/i18n/localize";
 
-export async function Footer({ dict }: { dict: Dictionary }) {
+export async function Footer() {
+  const { m, locale } = await getI18n();
   const categories = await getCategories();
+  const divs = localizeAll(divisions, locale);
   const c = siteConfig.contact;
   const wa = whatsappLink();
 
@@ -18,7 +21,7 @@ export async function Footer({ dict }: { dict: Dictionary }) {
       <FadeContent effect="fade" duration={0.9} threshold={0.1} className="container-x grid gap-12 py-16 lg:grid-cols-[1.4fr_1fr_1fr_1fr_1.2fr]">
         <div className="max-w-sm">
           <CloudTrekLogo variant="full" href="/" className="h-32 sm:h-40" sizes="500px" />
-          <p className="mt-5 text-sm leading-relaxed text-muted-foreground">{siteConfig.description}</p>
+          <p className="mt-5 text-sm leading-relaxed text-muted-foreground">{m.footer.description}</p>
           <a
             href={c.instagram}
             target="_blank"
@@ -29,15 +32,15 @@ export async function Footer({ dict }: { dict: Dictionary }) {
           </a>
         </div>
 
-        <FooterCol title="Navigate">
+        <FooterCol title={m.footer.navigate}>
           {navLinks.map((l) => (
             <li key={l.href}>
-              <Link href={l.href} className="hover:text-brand-red">{dict.nav[l.key]}</Link>
+              <Link href={l.href} className="hover:text-brand-red">{m.nav[l.key]}</Link>
             </li>
           ))}
         </FooterCol>
 
-        <FooterCol title="Products">
+        <FooterCol title={m.footer.products}>
           {categories.slice(0, 8).map((cat) => (
             <li key={cat.id}>
               <Link href={`/products?category=${cat.slug}`} className="hover:text-brand-red">{cat.name}</Link>
@@ -45,30 +48,30 @@ export async function Footer({ dict }: { dict: Dictionary }) {
           ))}
         </FooterCol>
 
-        <FooterCol title="Services">
-          {divisions.map((d) => (
+        <FooterCol title={m.footer.services}>
+          {divs.map((d) => (
             <li key={d.slug}>
               <Link href={d.href} className="hover:text-brand-red">{d.title}</Link>
             </li>
           ))}
-          <li><Link href="/corporate-gifting" className="hover:text-brand-red">Corporate Gifting</Link></li>
+          <li><Link href="/corporate-gifting" className="hover:text-brand-red">{m.nav.gifting}</Link></li>
         </FooterCol>
 
         <div>
-          <h3 className="mb-5 font-sans text-[11px] font-semibold uppercase tracking-[0.18em] text-navy">Contact</h3>
+          <h3 className="mb-5 font-sans text-[11px] font-semibold uppercase tracking-[0.18em] text-navy">{m.footer.contact}</h3>
           <ul className="space-y-3.5 text-sm text-charcoal/80">
-            <li className="flex gap-3"><MapPin className="mt-0.5 size-4 shrink-0 text-brand-red" aria-hidden /><span>{c.address || siteConfig.locationLabel}</span></li>
+            <li className="flex gap-3"><MapPin className="mt-0.5 size-4 shrink-0 text-brand-red" aria-hidden /><span>{c.address || m.brand.location}</span></li>
             {c.email && <li className="flex gap-3"><Mail className="mt-0.5 size-4 shrink-0 text-brand-red" aria-hidden /><a href={`mailto:${c.email}`} className="hover:text-brand-red">{c.email}</a></li>}
             {c.phone && <li className="flex gap-3"><Phone className="mt-0.5 size-4 shrink-0 text-brand-red" aria-hidden /><a href={`tel:${c.phone}`} className="hover:text-brand-red">{c.phone}</a></li>}
-            {wa && <li className="flex gap-3"><MessageCircle className="mt-0.5 size-4 shrink-0 text-brand-red" aria-hidden /><a href={wa} target="_blank" rel="noopener noreferrer" className="hover:text-brand-red">WhatsApp us</a></li>}
+            {wa && <li className="flex gap-3"><MessageCircle className="mt-0.5 size-4 shrink-0 text-brand-red" aria-hidden /><a href={wa} target="_blank" rel="noopener noreferrer" className="hover:text-brand-red">{m.footer.whatsapp}</a></li>}
           </ul>
         </div>
       </FadeContent>
 
       <div className="border-t border-line">
         <div className="container-x flex flex-col gap-2 py-6 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
-          <p>© {new Date().getFullYear()} Cloud Trek. All rights reserved.</p>
-          <p>For events management, publicity and advertising, Kingdom of Bahrain. Link animations adapted from <a href="https://skiper-ui.com" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-navy">Skiper UI</a>.</p>
+          <p>{m.footer.rights(new Date().getFullYear())}</p>
+          <p>{m.footer.line} {m.footer.credit} <a href="https://skiper-ui.com" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-navy">Skiper UI</a>.</p>
         </div>
       </div>
     </footer>

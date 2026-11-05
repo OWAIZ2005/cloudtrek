@@ -2,12 +2,13 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Boxes, ClipboardList, FolderKanban, Images, LayoutDashboard } from "lucide-react";
+import { Boxes, ClipboardList, FolderKanban, Images, LayoutDashboard, Mail } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const items = [
   { href: "/admin", label: "Overview", icon: LayoutDashboard, exact: true },
   { href: "/admin/enquiries", label: "Enquiries", icon: ClipboardList },
+  { href: "/admin/messages", label: "Messages", icon: Mail },
   { href: "/admin/products", label: "Products", icon: Boxes },
   { href: "/admin/categories", label: "Categories", icon: FolderKanban },
   { href: "/admin/portfolio", label: "Portfolio", icon: Images },

@@ -15,12 +15,12 @@ import {
 import { FinalCta } from "@/components/home/final-cta";
 import { getCategories, getCategoryCounts, getProducts, getProjects, getStats } from "@/lib/data";
 import { siteConfig } from "@/config/site";
+import { getI18n } from "@/i18n/get-locale";
 
-export const metadata: Metadata = {
-  title: { absolute: "Cloud Trek | Corporate Gifting & Promotional Products, Bahrain" },
-  description: siteConfig.description,
-  alternates: { canonical: "/" },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { m } = await getI18n();
+  return { title: { absolute: m.meta.siteTitle }, description: m.meta.siteDescription, alternates: { canonical: "/" } };
+}
 
 export default async function HomePage() {
   const [categories, counts, featured, { projects }, stats] = await Promise.all([

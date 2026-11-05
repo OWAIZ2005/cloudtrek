@@ -20,6 +20,15 @@ function Row({ id, label, hint, children }: { id: string; label: string; hint?: 
   );
 }
 
+function ArabicBlock({ children }: { children: React.ReactNode }) {
+  return (
+    <fieldset className="space-y-5 border border-line bg-offwhite/60 p-4">
+      <legend className="px-2 text-xs font-semibold uppercase tracking-wider text-navy">Arabic translation (shown when the visitor selects Arabic)</legend>
+      {children}
+    </fieldset>
+  );
+}
+
 const area = "w-full border border-input bg-white px-3 py-2.5 text-sm outline-none transition-colors focus:border-navy disabled:bg-offwhite";
 
 function ImagePicker({ initial, name = "keepImages", fileName = "newImages", multiple = true }: { initial: string[]; name?: string; fileName?: string; multiple?: boolean }) {
@@ -81,6 +90,15 @@ export function ProductForm({ product, categories, readOnly }: { product?: (Prod
         <Row id="specifications" label="Specifications" hint="One per line, as Label: Value."><textarea id="specifications" name="specifications" rows={5} defaultValue={p?.specifications.map((s) => `${s.label}: ${s.value}`).join("\n")} className={area} /></Row>
         <Row id="customizationOptions" label="Customization options" hint="One per line."><textarea id="customizationOptions" name="customizationOptions" rows={5} defaultValue={p?.customizationOptions.join("\n")} className={area} /></Row>
       </div>
+      <ArabicBlock>
+        <Row id="ar_name" label="Name (Arabic)"><input id="ar_name" name="ar_name" dir="rtl" defaultValue={p?.ar?.name} className={adminInput} /></Row>
+        <Row id="ar_shortDescription" label="Short description (Arabic)"><input id="ar_shortDescription" name="ar_shortDescription" dir="rtl" defaultValue={p?.ar?.shortDescription} className={adminInput} /></Row>
+        <Row id="ar_description" label="Description (Arabic)"><textarea id="ar_description" name="ar_description" dir="rtl" rows={4} defaultValue={p?.ar?.description} className={area} /></Row>
+        <div className="grid gap-5 md:grid-cols-2">
+          <Row id="ar_specifications" label="Specifications (Arabic)" hint="One per line, as Label: Value."><textarea id="ar_specifications" name="ar_specifications" dir="rtl" rows={4} defaultValue={p?.ar?.specifications?.map((s) => `${s.label}: ${s.value}`).join("\n")} className={area} /></Row>
+          <Row id="ar_customizationOptions" label="Customization options (Arabic)" hint="One per line."><textarea id="ar_customizationOptions" name="ar_customizationOptions" dir="rtl" rows={4} defaultValue={p?.ar?.customizationOptions?.join("\n")} className={area} /></Row>
+        </div>
+      </ArabicBlock>
       <Row id="images" label="Images"><ImagePicker initial={p?.images ?? []} /></Row>
       <div className="flex flex-wrap gap-6">
         <label className="flex items-center gap-2 text-sm"><input type="checkbox" name="isFeatured" defaultChecked={p?.isFeatured} className="size-4 accent-[#173b70]" /> Featured on homepage</label>
@@ -100,6 +118,10 @@ export function CategoryForm({ category, readOnly }: { category?: Category | nul
         <Row id="slug" label="Slug"><input id="slug" name="slug" defaultValue={c?.slug} className={adminInput} /></Row>
       </div>
       <Row id="description" label="Description"><textarea id="description" name="description" rows={3} defaultValue={c?.description} className={area} /></Row>
+      <ArabicBlock>
+        <Row id="ar_name" label="Name (Arabic)"><input id="ar_name" name="ar_name" dir="rtl" defaultValue={c?.ar?.name} className={adminInput} /></Row>
+        <Row id="ar_description" label="Description (Arabic)"><textarea id="ar_description" name="ar_description" dir="rtl" rows={3} defaultValue={c?.ar?.description} className={area} /></Row>
+      </ArabicBlock>
       <Row id="image" label="Image">
         <input type="hidden" name="keepImage" value={c?.image ?? ""} />
         {c?.image && <div className="relative mb-3 size-24 overflow-hidden border border-line"><Image src={c.image} alt="" fill sizes="96px" className="object-cover" /></div>}
@@ -122,6 +144,12 @@ export function ProjectForm({ project, readOnly }: { project?: PortfolioProject 
       </div>
       <Row id="description" label="Description"><textarea id="description" name="description" rows={4} defaultValue={p?.description} className={area} /></Row>
       <Row id="details" label="Project details" hint="One per line, as Label: Value."><textarea id="details" name="details" rows={4} defaultValue={p?.details.map((s) => `${s.label}: ${s.value}`).join("\n")} className={area} /></Row>
+      <ArabicBlock>
+        <Row id="ar_title" label="Title (Arabic)"><input id="ar_title" name="ar_title" dir="rtl" defaultValue={p?.ar?.title} className={adminInput} /></Row>
+        <Row id="ar_category" label="Category (Arabic)"><input id="ar_category" name="ar_category" dir="rtl" defaultValue={p?.ar?.category} className={adminInput} /></Row>
+        <Row id="ar_description" label="Description (Arabic)"><textarea id="ar_description" name="ar_description" dir="rtl" rows={3} defaultValue={p?.ar?.description} className={area} /></Row>
+        <Row id="ar_details" label="Project details (Arabic)" hint="One per line, as Label: Value."><textarea id="ar_details" name="ar_details" dir="rtl" rows={3} defaultValue={p?.ar?.details?.map((s) => `${s.label}: ${s.value}`).join("\n")} className={area} /></Row>
+      </ArabicBlock>
       <Row id="images" label="Images"><ImagePicker initial={p?.images ?? []} /></Row>
       <label className="flex items-center gap-2 text-sm"><input type="checkbox" name="isFeatured" defaultChecked={p?.isFeatured} className="size-4 accent-[#173b70]" /> Featured</label>
     </Shell>

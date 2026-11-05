@@ -1,10 +1,10 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, Paperclip } from "lucide-react";
+import { ArrowLeft, Paperclip, RefreshCw } from "lucide-react";
 import { requireAdmin } from "@/lib/admin/auth";
 import { adminEnquiry } from "@/lib/admin/data";
-import { updateEnquiryStatus } from "@/app/admin/actions";
-import { adminInput, DemoBadge, fmtDate, Notice, PageTitle, Panel, primaryBtn, StatusBadge } from "@/components/admin/ui";
+import { retryEnquiryEmail, updateEnquiryStatus } from "@/app/admin/actions";
+import { adminInput, DemoBadge, EmailBadge, fmtDate, Notice, PageTitle, Panel, primaryBtn, StatusBadge } from "@/components/admin/ui";
 import { ENQUIRY_STATUSES, ENQUIRY_STATUS_LABELS } from "@/types";
 
 export const metadata = { title: "Enquiry" };
@@ -24,6 +24,8 @@ export default async function EnquiryPage({ params, searchParams }: PageProps<"/
       <Link href="/admin/enquiries" className="mb-5 inline-flex items-center gap-2 text-sm text-navy hover:text-brand-red"><ArrowLeft className="size-4" aria-hidden /> All enquiries</Link>
       <PageTitle title={e.enquiryNumber} sub={`Received ${fmtDate(e.createdAt)}`} action={<div className="flex items-center gap-2">{e.isDemo && <DemoBadge />}<StatusBadge status={e.status} /></div>} />
       {sp.updated && <Notice kind="ok">Status updated.</Notice>}
+      {sp.retried === "sent" && <Notice kind="ok">Notification email sent.</Notice>}
+      {sp.retried === "failed" && <Notice kind="error">The email could not be sent. See the error below.</Notice>}
 
       <div className="grid gap-6 xl:grid-cols-3">
         <div className="space-y-6 xl:col-span-2">
@@ -59,6 +61,19 @@ export default async function EnquiryPage({ params, searchParams }: PageProps<"/
               <div><dt className="text-xs uppercase tracking-wider text-muted-foreground">Email</dt><dd className="mt-1 text-sm"><a href={`mailto:${e.email}`} className="text-navy hover:text-brand-red">{e.email}</a></dd></div>
               <div><dt className="text-xs uppercase tracking-wider text-muted-foreground">Phone</dt><dd className="mt-1 text-sm"><a href={`tel:${e.phone}`} className="text-navy hover:text-brand-red">{e.phone}</a></dd></div>
             </dl>
+          </Panel>
+          <Panel title="Email notification">
+            <div className="space-y-3 text-sm">
+              <p className="flex items-center justify-between"><span className="text-muted-foreground">Status</span><EmailBadge status={e.emailStatus} /></p>
+              <p className="flex items-center justify-between"><span className="text-muted-foreground">Attempts</span><span>{e.emailAttempts}</span></p>
+              {e.emailError && <p className="break-words border border-brand-red/30 bg-brand-red/5 p-2.5 text-xs text-charcoal">{e.emailError}</p>}
+              {e.emailStatus !== "sent" && (
+                <form action={retryEnquiryEmail}>
+                  <input type="hidden" name="id" value={e.id} />
+                  <button disabled={readOnly} className={`${primaryBtn} w-full`}><RefreshCw className="size-4" aria-hidden /> Retry email</button>
+                </form>
+              )}
+            </div>
           </Panel>
           <Panel title="Update status">
             <form action={updateEnquiryStatus} className="space-y-3">

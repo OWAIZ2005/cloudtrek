@@ -2,14 +2,15 @@ import type { Metadata } from "next";
 import { PageHero } from "@/components/shared/page-hero";
 import { QuoteForm } from "@/components/forms/quote-form";
 import { getCollections, getProducts, getProductsBySlugs } from "@/lib/data";
+import { getI18n } from "@/i18n/get-locale";
 
-export const metadata: Metadata = {
-  title: "Request a Quote",
-  description: "Build an enquiry list, share your customization requirements and receive a quotation from Cloud Trek.",
-  alternates: { canonical: "/quote" },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { m } = await getI18n();
+  return { title: m.meta.quote.title, description: m.meta.quote.description, alternates: { canonical: "/quote" } };
+}
 
 export default async function QuotePage({ searchParams }: PageProps<"/quote">) {
+  const { m } = await getI18n();
   const sp = await searchParams;
   const productSlug = typeof sp.product === "string" ? sp.product : "";
   const collectionSlug = typeof sp.collection === "string" ? sp.collection : "";
@@ -24,9 +25,9 @@ export default async function QuotePage({ searchParams }: PageProps<"/quote">) {
   return (
     <>
       <PageHero
-        eyebrow="Request a quote"
-        title="Tell us what you need."
-        intro="Build your enquiry list, add your customization requirements and send it through. Pricing is quotation-based and tailored to your quantities and branding."
+        eyebrow={m.quote.eyebrow}
+        title={m.quote.title}
+        intro={m.quote.intro}
       />
       <section className="container-x py-12 lg:py-16">
         <QuoteForm catalogue={all.map(toOption)} preselect={pre.map(toOption)} />

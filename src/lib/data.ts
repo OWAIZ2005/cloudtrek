@@ -1,4 +1,6 @@
 import "server-only";
+import { getLocale } from "@/i18n/get-locale";
+import { localizeAll } from "@/i18n/localize";
 import { createPublicClient } from "@/lib/supabase/public";
 import { mapCategory, mapProduct, mapProject } from "@/lib/supabase/mappers";
 import { demoCategories, demoCollections, demoProducts, demoProjects, demoStats } from "@/data/demo-data";
@@ -10,6 +12,7 @@ import type { Category, DataSource, GiftingCollection, PortfolioProject, Product
  */
 
 async function loadCatalogue(): Promise<{ categories: Category[]; products: Product[]; source: DataSource }> {
+  const locale = await getLocale();
   const db = createPublicClient();
   if (db) {
     try {
@@ -19,8 +22,8 @@ async function loadCatalogue(): Promise<{ categories: Category[]; products: Prod
       ]);
       if (!cats.error && !prods.error && prods.data && prods.data.length > 0) {
         return {
-          categories: (cats.data ?? []).map(mapCategory),
-          products: prods.data.map((r) => mapProduct(r)),
+          categories: localizeAll((cats.data ?? []).map(mapCategory), locale),
+          products: localizeAll(prods.data.map((r) => mapProduct(r)), locale),
           source: "supabase",
         };
       }
@@ -28,7 +31,7 @@ async function loadCatalogue(): Promise<{ categories: Category[]; products: Prod
       console.error("[data] Supabase catalogue read failed, using demo data:", e);
     }
   }
-  return { categories: demoCategories, products: demoProducts, source: "demo" };
+  return { categories: localizeAll(demoCategories, locale), products: localizeAll(demoProducts, locale), source: "demo" };
 }
 
 export async function getCatalogueSource(): Promise<DataSource> {
@@ -86,16 +89,17 @@ export async function getCategoryCounts(): Promise<Record<string, number>> {
 }
 
 export async function getProjects(): Promise<{ projects: PortfolioProject[]; source: DataSource }> {
+  const locale = await getLocale();
   const db = createPublicClient();
   if (db) {
     try {
       const { data, error } = await db.from("portfolio_projects").select("*").order("created_at", { ascending: false });
-      if (!error && data && data.length > 0) return { projects: data.map(mapProject), source: "supabase" };
+      if (!error && data && data.length > 0) return { projects: localizeAll(data.map(mapProject), locale), source: "supabase" };
     } catch (e) {
       console.error("[data] Supabase portfolio read failed, using demo data:", e);
     }
   }
-  return { projects: demoProjects, source: "demo" };
+  return { projects: localizeAll(demoProjects, locale), source: "demo" };
 }
 
 export async function getProjectBySlug(slug: string) {
@@ -105,9 +109,10 @@ export async function getProjectBySlug(slug: string) {
 
 /** Gifting collections and statistics are editorial demo content (no table in the MVP schema). */
 export async function getCollections(): Promise<GiftingCollection[]> {
-  return demoCollections;
+  return localizeAll(demoCollections, await getLocale());
 }
 
 export async function getStats(): Promise<Stat[]> {
-  return demoStats;
+  const locale = await getLocale();
+  return demoStats.map((st) => ({ ...st, label: locale === "ar" && st.ar ? st.ar.label : st.label }));
 }
