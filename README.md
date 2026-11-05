@@ -61,7 +61,7 @@ Installed and used, each inspected and customised to the brand (source in `src/c
 1. Create a project at supabase.com.
 2. SQL editor → run, in order, `supabase/migrations/0001_init.sql` (tables, indexes, RLS, storage buckets `catalogue` and `enquiry-uploads`) and `supabase/migrations/0002_email_contact_translations.sql` (email delivery tracking, `contact_messages`, Arabic `translations` columns).
 3. *(Optional demo catalogue)* run `supabase/seed.sql` (rows flagged `is_demo = true`). Regenerate with `npm run seed:generate`. `supabase/demo-enquiries.sql` is a **separate, optional** file of clearly flagged `DEMO-` enquiries; never run it against a live customer database.
-4. Copy the project URL, anon key and service-role key into `.env.local` / Vercel. **The service-role key is server-only.**
+4. Copy the project URL, the **publishable** key (`NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`; legacy `..._ANON_KEY` also works) and the **secret** key (`SUPABASE_SECRET_KEY`; legacy `SUPABASE_SERVICE_ROLE_KEY` also works) into `.env.local` / Vercel. **The secret key is server-only; never prefix it with `NEXT_PUBLIC_`.**
 
 ### Create an admin account
 1. Supabase → Authentication → Users → *Add user* (email + password, tick auto-confirm).
