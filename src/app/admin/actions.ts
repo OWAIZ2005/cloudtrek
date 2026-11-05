@@ -231,6 +231,8 @@ export async function retryEnquiryEmail(form: FormData) {
   const id = String(form.get("id"));
   const { data: e } = await db.from("enquiries").select("*, enquiry_items(*)").eq("id", id).maybeSingle();
   if (!e) redirect("/admin/enquiries");
+  // Never re-send a notification that was already delivered (prevents duplicate emails).
+  if (e.email_status === "sent") redirect(`/admin/enquiries/${id}?retried=sent`);
   let attachmentUrl: string | null = null;
   if (e.logo_path) {
     const { data: s } = await db.storage.from("enquiry-uploads").createSignedUrl(e.logo_path, 60 * 60 * 24 * 7);
@@ -261,6 +263,7 @@ export async function retryContactEmail(form: FormData) {
   const id = String(form.get("id"));
   const { data: r } = await db.from("contact_messages").select("*").eq("id", id).maybeSingle();
   if (!r) redirect("/admin/messages");
+  if (r.email_status === "sent") redirect(`/admin/messages/${id}?retried=sent`);
   const mail = await notifyContact({
     reference: r.reference_number,
     createdAt: new Date(r.created_at),

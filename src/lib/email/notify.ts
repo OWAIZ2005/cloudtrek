@@ -1,6 +1,6 @@
 import "server-only";
 import { emailConfig } from "./config";
-import { safeHeader, sendEmail, type SendResult } from "./send";
+import { sendEmail, type SendResult } from "./send";
 import { contactEmail, customerReceipt, enquiryEmail, type ContactEmailData, type EnquiryEmailData } from "./templates";
 
 export type EmailOutcome = { status: "sent" | "failed"; error: string | null };
@@ -13,7 +13,7 @@ export async function notifyEnquiry(d: EnquiryEmailData): Promise<EmailOutcome> 
   const { html, text } = enquiryEmail(d);
   const r = await sendEmail({
     to: c.to,
-    subject: `New Quote Enquiry — Cloud Trek — ${safeHeader(d.companyName || d.customerName, 90)}`,
+    subject: "New Quotation Request - Cloud Trek",
     html,
     text,
     replyTo: d.email,
@@ -30,7 +30,7 @@ export async function notifyContact(d: ContactEmailData): Promise<EmailOutcome> 
   const { html, text } = contactEmail(d);
   const r = await sendEmail({
     to: c.to,
-    subject: `New Contact Message — Cloud Trek — ${safeHeader(d.customerName, 90)}`,
+    subject: "New Contact Message - Cloud Trek",
     html,
     text,
     replyTo: d.email,
