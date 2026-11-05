@@ -22,7 +22,7 @@ const img = (group: string, file: string) => `/images/${group}/${file}.jpg`;
 /* ----------------------------- Categories ----------------------------- */
 
 export const demoCategories: Category[] = [
-  { id: "cat-stationery", name: "Corporate Stationery", slug: "corporate-stationery", description: "Notebooks, pens and desk essentials that carry your brand into every meeting.", image: img("categories", "stationery-portrait"), isActive: true, isDemo: true },
+  { id: "cat-stationery", name: "Corporate Stationery", slug: "corporate-stationery", description: "Notebooks, pens and desk essentials that carry your brand into every meeting.", image: img("products", "leather-notebook"), isActive: true, isDemo: true },
   { id: "cat-tech", name: "Tech & Electronics", slug: "tech-electronics", description: "Chargers, audio and storage gifts that earn a permanent place on the desk.", image: img("products", "wireless-charging-station"), isActive: true, isDemo: true },
   { id: "cat-drinkware", name: "Drinkware", slug: "drinkware", description: "Insulated bottles and travel mugs for everyday brand visibility.", image: img("products", "vacuum-bottle"), isActive: true, isDemo: true },
   { id: "cat-bags", name: "Bags & Accessories", slug: "bags-accessories", description: "Backpacks, totes and carry solutions for teams, clients and events.", image: img("products", "corporate-backpack"), isActive: true, isDemo: true },

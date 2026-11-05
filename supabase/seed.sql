@@ -3,7 +3,7 @@
 -- Image paths point at /public/images, which ships with the site.
 
 insert into public.categories (name, slug, description, image, is_active, is_demo) values
-  ('Corporate Stationery', 'corporate-stationery', 'Notebooks, pens and desk essentials that carry your brand into every meeting.', '/images/categories/stationery-portrait.jpg', true, true),
+  ('Corporate Stationery', 'corporate-stationery', 'Notebooks, pens and desk essentials that carry your brand into every meeting.', '/images/products/leather-notebook.jpg', true, true),
   ('Tech & Electronics', 'tech-electronics', 'Chargers, audio and storage gifts that earn a permanent place on the desk.', '/images/products/wireless-charging-station.jpg', true, true),
   ('Drinkware', 'drinkware', 'Insulated bottles and travel mugs for everyday brand visibility.', '/images/products/vacuum-bottle.jpg', true, true),
   ('Bags & Accessories', 'bags-accessories', 'Backpacks, totes and carry solutions for teams, clients and events.', '/images/products/corporate-backpack.jpg', true, true),
